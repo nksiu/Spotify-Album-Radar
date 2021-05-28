@@ -64,4 +64,6 @@ Have the job send an email summary of weekly updates
 - Should return an artist’s new songs every week
   - Display and maybe save to account
 ```
-
+![alt text](https://github.com/nksiu/Spotify-Album-Radar/blob/main/loginpage.png?raw=true)
+![alt text](https://github.com/nksiu/Spotify-Album-Radar/blob/main/myprofile.png?raw=true)
+![alt text](https://github.com/nksiu/Spotify-Album-Radar/blob/main/newreleases.png?raw=true)
