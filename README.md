@@ -24,19 +24,19 @@ This project is for anyone who loves listening to music and wants to keep track 
 ***Minimum Requirements (3-5)***
 ```
 - User + Artist tracking
-- User authentication for spotify should work to link user account
-- User should be able to see a per-user home/profile page
-- User should to able to manually add artists to track
+  - User authentication for spotify should work to link user account
+  - User should be able to see a per-user home/profile page
+  - User should to able to manually add artists to track
 - DB should be able to save user’s tracked artists
-- Link DB to Users
-- Add entry to DB when user adds new artist
+  - Link DB to Users
+  - Add entry to DB when user adds new artist
 - The release retrieval job should be functional
-- Release retrieval should pull all tracked artists from DB
-- Job should find the most recent song released by artists, check whether the date of release is within the past week (past 7 days from when Job was run)
-- If so, then job updates DB with “most recent” song, else nothing happens
+  - Release retrieval should pull all tracked artists from DB
+  - Job should find the most recent song released by artists, check whether the date of release is within the past week (past 7 days from when Job was run)
+-   If so, then job updates DB with “most recent” song, else nothing happens
 - Users should be able to see a “new releases” page/section, where songs fitting the criterion from 3) appear. Songs must be from user’s tracked list of artists
-- Pull entries from DB and display newly released songs
-- Songs should be listed underneath the correct artist
+  - Pull entries from DB and display newly released songs
+  - Songs should be listed underneath the correct artist
 ```
 
 ***Standard (2-4):***
