@@ -4,6 +4,8 @@ import {
   Route
 } from 'react-router-dom'
 
+import Song from './components/song'
+
 function App() {
   return (
     <div className="App">
@@ -13,7 +15,7 @@ function App() {
             <p>default route</p>
           </Route>
           <Route exact path='/songs'>
-            <p>your page/component here</p>
+            <Song />
           </Route>
         </Switch>
       </Router>
