@@ -4,7 +4,8 @@ import {
   Route
 } from 'react-router-dom'
 
-import Song from './components/song'
+// Components
+import NewReleases from './page/new-releases'
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
             <p>default route</p>
           </Route>
           <Route exact path='/songs'>
-            <Song />
+            <NewReleases />
           </Route>
         </Switch>
       </Router>
