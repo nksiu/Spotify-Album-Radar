@@ -30,18 +30,22 @@ const mockData = [
     },
 ]
 
-
 function UserManagement() {
     const[artistList, updateArtistList] = useState(mockData);
     const addArtist = (artist) => {
         const newObj = {artistName: artist};
         updateArtistList([...artistList, newObj]);
     }
+
+    const deleteArtist = (i) => {
+        artistList.splice(i, 1);
+        updateArtistList([...artistList]);
+    }
     return (
         <Wrapper>
             <ResponsiveTitle>Profile Management</ResponsiveTitle>
             <ArtistManager addArtist={addArtist}/>
-            <ArtistList artists={artistList}></ArtistList>
+            <ArtistList artists={artistList} deleteArtist={deleteArtist}></ArtistList>
         </Wrapper>
     );
 }

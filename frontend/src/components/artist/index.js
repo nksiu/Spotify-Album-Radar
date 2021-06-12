@@ -28,12 +28,15 @@ const DeleteButton = styled.div`
 `
 
 function Artist(props){
+    const handleDelete = () => {
+        props.deleteArtist(props.index)
+    }
     return(
         <ArtistRow>
             <ArtistWrapper>
                 <ArtistName>
                     {props.artistName}
-                    <DeleteButton>x</DeleteButton>
+                    <DeleteButton onClick={handleDelete}>x</DeleteButton>
                 </ArtistName>
             </ArtistWrapper>
         </ArtistRow>
