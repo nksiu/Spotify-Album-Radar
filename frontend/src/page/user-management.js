@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 // Components
-import { Title } from '../components/title';
+import { ResponsiveTitle } from '../components/title';
 import ArtistList from '../components/artist-list';
 import ArtistManager from '../components/artist-manager';
 
@@ -33,7 +33,7 @@ const mockData = [
 function UserManagement() {
     return (
         <Wrapper>
-            <Title>Profile Management</Title>
+            <ResponsiveTitle>Profile Management</ResponsiveTitle>
             <ArtistManager/>
             <ArtistList artists={mockData}></ArtistList>
         </Wrapper>
