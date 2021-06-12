@@ -18,9 +18,7 @@
 .env.test.local
 .env.production.local
 
-#lock files
-yarn.lock
-package-lock.json
+#node_modules
 node_modules
 
 npm-debug.log*
