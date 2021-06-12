@@ -19,7 +19,7 @@ const Input = styled.input`
 `
 
 const Button = styled.input`
-
+  margin: 0 auto;
 `
 
 const Wrapper = styled.div`
