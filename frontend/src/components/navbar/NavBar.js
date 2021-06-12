@@ -90,13 +90,13 @@ export default function NavBar() {
       </NavLink>
       <Bars />
       <NavMenu>
-        <NavLink to="/about" activeStyle>
+        <NavLink to="/about">
           About
         </NavLink>
-        <NavLink to="/songs" activeStyle>
+        <NavLink to="/songs">
           Songs
         </NavLink>
-        <NavBtnLink to="/signin">Sign In</NavBtnLink>
+        <NavBtnLink to="/profile">Sign In</NavBtnLink>
       </NavMenu>
     </Nav>
   );
