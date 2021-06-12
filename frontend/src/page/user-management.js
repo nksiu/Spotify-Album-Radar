@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ResponsiveTitle } from '../components/title';
 import ArtistList from '../components/artist-list';
 import ArtistManager from '../components/artist-manager';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -31,11 +32,16 @@ const mockData = [
 
 
 function UserManagement() {
+    const[artistList, updateArtistList] = useState(mockData);
+    const addArtist = (artist) => {
+        const newObj = {artistName: artist};
+        updateArtistList([...artistList, newObj]);
+    }
     return (
         <Wrapper>
             <ResponsiveTitle>Profile Management</ResponsiveTitle>
-            <ArtistManager/>
-            <ArtistList artists={mockData}></ArtistList>
+            <ArtistManager addArtist={addArtist}/>
+            <ArtistList artists={artistList}></ArtistList>
         </Wrapper>
     );
 }
