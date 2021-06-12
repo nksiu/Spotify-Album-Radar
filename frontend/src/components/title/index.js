@@ -16,6 +16,7 @@ export const ResponsiveTitle = styled.h1`
 
 export const CenteredSubTitle = styled.h1`
   color: ${colors.black};
+  margin-bottom: 30px;
   align-self: center;
 `
 

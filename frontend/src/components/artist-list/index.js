@@ -24,8 +24,8 @@ function ArtistList(props) {
             <SearchBar/>
             <ArtistTable>
                 <ArtistTableBody>
-                {props.artists.map((artist) => 
-                <Artist key = {artist.artistName} artistName={artist.artistName}/>
+                {props.artists.map((artist, i) => 
+                <Artist key = {artist.artistName} artistName={artist.artistName} index={i} deleteArtist={props.deleteArtist} />
                 )}
                 </ArtistTableBody>
             </ArtistTable>
