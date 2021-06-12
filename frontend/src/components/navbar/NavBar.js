@@ -96,7 +96,7 @@ export default function NavBar() {
         <NavLink to="/songs" activeStyle>
           Songs
         </NavLink>
-        <NavBtnLink to="/signin">Sign In</NavBtnLink>
+        <NavBtnLink to="/profile">Sign In</NavBtnLink>
       </NavMenu>
     </Nav>
   );
