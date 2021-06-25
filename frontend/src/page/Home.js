@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Home() {
+const Home = ({ token }) => {
   return (
     <div
       style={{
@@ -10,7 +10,16 @@ export default function Home() {
         height: "90vh",
       }}
     >
-      <h1>Home</h1>
+      {
+        token ?
+          <h1>Home</h1>
+          :
+          <button onClick={() => window.location='http://localhost:5000/login'}>
+            Log into Spotify
+          </button>
+      }
     </div>
   );
 }
+
+export default Home
