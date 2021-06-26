@@ -29,12 +29,16 @@ const SongName = styled.h4`
   letter-spacing: 1px;
 `
 
-const SongDuration = styled.p`
-  letter-spacing: 2px;
+const SongLink = styled.button`
+  background-color: ${colors.black};
+  color: ${colors.white};
+  font-size: 15px;
+  border-radius: 5px;
+  width: 200px;
+  height: 40px;
+  border-color: ${colors.green}
 `
-
 const Song = ({ songInfo }) => {
-
   return (
     <SongWrapper>
       <Container>
@@ -42,7 +46,11 @@ const Song = ({ songInfo }) => {
         <SongName>{songInfo.name}</SongName>
       </Container>
       <Container>
-        <SongDuration>{songInfo.duration}</SongDuration>
+        <a href={songInfo.url}>
+          <SongLink>
+          Open Album In Spotify
+          </SongLink>
+        </a>
       </Container>
     </SongWrapper>
   )

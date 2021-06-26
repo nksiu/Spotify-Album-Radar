@@ -93,9 +93,6 @@ export default function NavBar() {
         <NavLink to="/about">
           About
         </NavLink>
-        <NavLink to="/songs">
-          Songs
-        </NavLink>
         <NavBtnLink to="/profile">Sign In</NavBtnLink>
       </NavMenu>
     </Nav>

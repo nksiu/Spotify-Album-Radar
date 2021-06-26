@@ -1,10 +1,10 @@
 import React from "react";
+import NewReleases from "./new-releases";
 
 const Home = ({ token }) => {
   return (
     <div
       style={{
-        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         height: "90vh",
@@ -12,7 +12,7 @@ const Home = ({ token }) => {
     >
       {
         token ?
-          <h1>Home</h1>
+          <NewReleases />
           :
           <button onClick={() => window.location='http://localhost:5000/login'}>
             Log into Spotify

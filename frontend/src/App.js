@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Cookies from 'js-cookie'
 
 // Components
-import NewReleases from "./page/new-releases";
 import NavBar from "./components/navbar/NavBar";
 import Home from "./page/Home";
 import About from "./page/About";
@@ -20,11 +19,11 @@ function App() {
             <Home token={token} />
           </Route>
           <Route exact path="/about" component={About}></Route>
-          <Route exact path="/songs">
-            <NewReleases />
-          </Route>
           <Route exact path='/profile'>
             <UserManagement />
+          </Route>
+          <Route path='*'>
+            <h1>Page Not Found</h1>
           </Route>
         </Switch>
       </Router>
