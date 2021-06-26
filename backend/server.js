@@ -2,7 +2,6 @@ const express = require('express')
 const request = require('request')
 const axios = require('axios')
 const querystring = require('querystring')
-const SpotifyWebApi = require('spotify-web-api-node');
 const cors = require('cors')
 require('dotenv').config()
 
