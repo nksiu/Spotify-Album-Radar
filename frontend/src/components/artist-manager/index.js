@@ -47,8 +47,12 @@ function ArtistManager(props){
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (artistList.length === 0) {
+      alert("No artist is selected!")
+    } else {
     artistList.forEach((artist) => props.addArtist(artist.label));
     setArtistList(initState);
+    }
   }
 
   const loadOptions = (inputValue, callback) => {
