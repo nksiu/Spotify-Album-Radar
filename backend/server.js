@@ -2,7 +2,7 @@ const express = require('express')
 const request = require('request')
 const axios = require('axios')
 const querystring = require('querystring')
-const cors = require('cors');
+const cors = require('cors')
 require('dotenv').config()
 
 const app = express()

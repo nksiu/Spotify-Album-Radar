@@ -1,5 +1,4 @@
 const express = require('express')
-const request = require('request')
 const querystring = require('querystring')
 const axios = require('axios');
 require('dotenv').config()
