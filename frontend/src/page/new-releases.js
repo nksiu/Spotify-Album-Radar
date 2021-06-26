@@ -1,36 +1,12 @@
 import styled from 'styled-components'
-
+import axios from 'axios';
+import Cookies from 'js-cookie'
 // Components
 import { Title } from '../components/title'
 import SongList from '../components/song-list'
-
-const mockData = [
-  {
-    artistName: 'Ariana Grande',
-    songs: [
-      {
-        image: 'http://cache.boston.com/resize/bonzai-fba/Globe_Photo/2011/04/14/1302796985_4480/539w.jpg',
-        name: 'Be Alright',
-        duration: '3:21'
-      },
-      {
-        image: 'http://cache.boston.com/resize/bonzai-fba/Globe_Photo/2011/04/14/1302796985_4480/539w.jpg',
-        name: 'Santa tell me',
-        duration: '2:21'
-      }
-    ]
-  },
-  {
-    artistName: 'Justin Bieber',
-    songs: [
-      {
-        image: 'http://cache.boston.com/resize/bonzai-fba/Globe_Photo/2011/04/14/1302796985_4480/539w.jpg',
-        name: 'Baby',
-        duration: '4:00'
-      }
-    ]
-  }
-]
+import { useEffect, useState } from 'react';
+import { GrRefresh } from 'react-icons/gr'
+import { colors } from '../styles';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -40,16 +16,52 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
 `
+const RefreshBtnWrapper = styled.div`
+  padding-right: 75px;
+`
 
-const NewReleases = () => {
-  
+const RefreshBtn = styled.button`
+  display:flex;
+  float: right;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: ${colors.white}
+`
+
+const RefreshIcon = styled(GrRefresh)`
+  font-size: 40px;
+  padding: 0 0 5 0 ;
+`
+
+const NewReleases = (props) => {
+  const token = Cookies.get('access_token');
+  const [newReleases, updateNewReleases] = useState([]);
+  const updateReleases = () => {
+    axios.get('http://localhost:5000/api/albums', { headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }}).then((res) => {
+      console.log(res);
+      updateNewReleases(res.data);
+    });
+  }
+  useEffect(updateReleases, [token]);
   return (
     <Wrapper>
       <Title>
         New Releases
       </Title>
+      <RefreshBtnWrapper>
+        
+        <RefreshBtn onClick={updateReleases}>
+          <RefreshIcon/>
+        </RefreshBtn>
+
+      </RefreshBtnWrapper>
       {
-        mockData.map(artist => (
+        newReleases.map(artist => (
           <SongList artist={artist}/>
         ))
       }

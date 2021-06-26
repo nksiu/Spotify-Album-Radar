@@ -1,11 +1,15 @@
 const express = require('express')
 const request = require('request')
+const axios = require('axios')
 const querystring = require('querystring')
 require('dotenv').config()
+const cors = require('cors');
 
 const app = express()
+app.use(cors());
 
 const redirect_uri = process.env.REDIRECT_URL || 'http://localhost:5000/callback'
+app.use('/api/albums', require('./routes/api/albums'));
 
 let expiry_time = null;
 let server_token = "";
