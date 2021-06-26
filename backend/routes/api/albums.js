@@ -3,7 +3,7 @@ const router = express.Router()
 const axios = require('axios')
 
 // How many days ago to look for new albums. Default: 7
-let numDaysFilter = 200;
+let numDaysFilter = 30;
 
 router.get('/', function(req, res) {
     // mock data
@@ -54,7 +54,6 @@ router.get('/', function(req, res) {
           return {
             image: album.images[0].url,
             name: album.name,
-            duration: '2:21',
             url: album.external_urls.spotify
           };
         });
