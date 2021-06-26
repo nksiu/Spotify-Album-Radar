@@ -17,11 +17,11 @@ const NavLink = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  padding: 0 1 rem;
+  padding: 10px 22px;
   height: 100%;
   cursor: pointer;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
 
   &.active {
     color: #1db954;
@@ -46,7 +46,6 @@ const Bars = styled(FaBars)`
 const NavMenu = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 24px;
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -63,7 +62,8 @@ const NavBtnLink = styled(Link)`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
-  margin-left: 24px;
+  margin-left: 3px;
+  margin-right: 3px;
 
   &.active {
     color: #1db954;
@@ -85,7 +85,8 @@ const LogOutButton = styled(Link)`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
-  margin-left: 24px;
+  margin-left: 3px;
+  margin-right: 3px;
 
   &:hover {
     transition: all 0.2s ease-int-out;
