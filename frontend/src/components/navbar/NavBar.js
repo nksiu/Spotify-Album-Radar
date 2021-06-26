@@ -96,7 +96,7 @@ const LogOutButton = styled(Link)`
 
 export default function NavBar(props) {
   const logOut = async () => {
-    window.localStorage.setItem('access_token', '');
+    await window.localStorage.setItem('access_token', '');
     window.location.reload(true);
   }
 
