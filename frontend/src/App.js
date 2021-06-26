@@ -26,6 +26,8 @@ function App() {
           <Route exact path='/profile'>
             <UserManagement />
           </Route>
+          <Route exact path='/LogOut'>
+          </Route>
           <Route path='*'>
             <h1>Page Not Found</h1>
           </Route>
