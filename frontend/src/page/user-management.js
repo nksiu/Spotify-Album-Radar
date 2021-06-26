@@ -17,17 +17,17 @@ const Wrapper = styled.div`
 
 const mockData = [
     {
-      artistName: 'Ariana Grande',
-      id: '66CXWjxzNUsdJxJ2JdwvnR'
+        artistName: 'Ariana Grande',
+        id: '66CXWjxzNUsdJxJ2JdwvnR'
+    },
+    {
+        artistName: 'Justin Bieber',
+        id: '1uNFoZAHBGtllmzznpCI3s'
     },
     {
         artistName: 'Emotional Oranges',
         id: '12trz2INGglrKMzLmg0y2C'
-      },
-    {
-      artistName: 'Justin Bieber',
-      id: '1uNFoZAHBGtllmzznpCI3s'
-    }
+    },
   ]
 
 const UserManagement = () => {
