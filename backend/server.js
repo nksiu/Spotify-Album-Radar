@@ -2,17 +2,18 @@ const express = require('express')
 const request = require('request')
 const axios = require('axios')
 const querystring = require('querystring')
-require('dotenv').config()
 const cors = require('cors');
+require('dotenv').config()
 
 const app = express()
-app.use(cors());
+app.use(cors())
 
 const redirect_uri = process.env.REDIRECT_URL || 'http://localhost:5000/callback'
-app.use('/api/albums', require('./routes/api/albums'));
 
-let expiry_time = null;
-let server_token = "";
+// API Endpoints
+app.use('/api/albums', require('./routes/api/albums'));
+app.use("/api/artists", require("./routes/api/artists"));
+
 
 app.get('/login', function(req, res) {
   res.redirect('https://accounts.spotify.com/authorize?' +
@@ -48,9 +49,6 @@ app.get('/callback', function(req, res) {
     res.redirect(url)
   })
 })
-
-app.use("/api/artists", require("./routes/api/artists"));
-
 
 const port = process.env.PORT || 5000
 console.log(`Listening on port ${port}`)

@@ -32,9 +32,17 @@ const mockData = [
 
 function UserManagement() {
     const[artistList, updateArtistList] = useState(mockData);
+
+    //TODO: Add in error dialogue for duplicate entry
     const addArtist = (artist) => {
         const newObj = {artistName: artist};
-        updateArtistList([...artistList, newObj]);
+        if (artistList.filter(savedArtist => {
+            return savedArtist.artistName === artist
+        }).length !== 0){
+            alert("Artist is a duplicate!")
+        } else {
+            updateArtistList([...artistList, newObj]);
+        }
     }
 
     const deleteArtist = (i) => {
