@@ -7,6 +7,9 @@ const app = express()
 
 const redirect_uri = process.env.REDIRECT_URL || 'http://localhost:5000/callback'
 
+let expiry_time = null;
+let server_token = "";
+
 app.get('/login', function(req, res) {
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -41,6 +44,9 @@ app.get('/callback', function(req, res) {
     res.redirect(url)
   })
 })
+
+app.use("/api/artists", require("./routes/api/artists"));
+
 
 const port = process.env.PORT || 5000
 console.log(`Listening on port ${port}`)

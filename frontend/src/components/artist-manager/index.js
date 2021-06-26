@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { colors, fontStyles } from '../../styles'
+import { getArtistResults } from '../../services/artist';
+import { colors, fontStyles } from '../../styles';
+import Cookies from 'js-cookie';
+import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 
 const ArtistTitle = styled.h1`
   margin: 0 auto;
   color: ${colors.black};
   margin-bottom: 20px;
 `
-
 
 const ArtistForm = styled.form`
   margin: 0 auto;
@@ -48,7 +51,20 @@ function ArtistManager(props){
 
   const handleChange = (e) => {
     setFormValue(e.target.value);
+    getArtistResults(e.target.value, Cookies.get('access_token'))
   }
+
+  const loadOptions = (inputValue, callback) => {
+    setTimeout(() => {
+      callback(filterColors(inputValue));
+    }, 1000);
+  };
+
+  handleInputChange = (newValue: string) => {
+    const inputValue = newValue.replace(/\W/g, '');
+    this.setState({ inputValue });
+    return inputValue;
+  };
 
   return (
     <Wrapper>
@@ -57,6 +73,7 @@ function ArtistManager(props){
             <Input  type="text" name='name' value={formValue} onChange={handleChange}></Input>
             <Button className="button" type="submit" value="Add Artist"></Button>
           </ArtistForm>
+          <Select options={Clearable, Searchable, Loading}
     </Wrapper>
   )
 }
