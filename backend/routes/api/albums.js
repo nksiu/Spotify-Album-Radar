@@ -69,6 +69,17 @@ router.get('/', function(req, res) {
     })
   });
 
+  router.put('/days/:days', function(req, res){
+    let newDays = req.params.days;
+    if (!isNaN(newDays)) {
+      numDaysFilter = newDays;
+      res.send(newDays);
+    } else {
+      res.status(400);
+      res.send('Bad Request, days must be number');
+    }
+  }) 
+
 
   
   module.exports = router;

@@ -17,18 +17,19 @@ const SongContainer = styled.div`
 
 const SongList = ({ artist }) => {
   return (
-    <Fragment>
+      (artist.songs.length !== 0) &&
+      <Fragment>
       <ArtistTitle>
-        {artist.artistName}
+      {artist.artistName}
       </ArtistTitle>
       <SongContainer>
-        {
-          artist.songs.map(song => (
-            <Song songInfo={song} />
+      {
+        artist.songs.map(song => (
+          <Song songInfo={song} />
           ))
         }
-      </SongContainer>
-    </Fragment>
+        </SongContainer>
+        </Fragment>
   )
 }
 
