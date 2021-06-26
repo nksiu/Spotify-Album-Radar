@@ -22,7 +22,12 @@ router.get('/', function(req, res) {
       }
     ]
     let promises = [];
-    let myData = JSON.parse(req.query.artists);
+    let myData;
+    if (req.query.artists == undefined) {
+      myData = mock;
+    } else {
+      myData = JSON.parse(req.query.artists);
+    }
     myData.forEach((artist) => {
       let promise = axios.get(`https://api.spotify.com/v1/artists/${artist.id}/albums`, {
         params: {
