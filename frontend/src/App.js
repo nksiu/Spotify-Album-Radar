@@ -13,6 +13,7 @@ function App() {
   if (token) {
     window.localStorage.setItem('access_token', token)
   }
+
   return (
     <div className="App">
       <Router>
