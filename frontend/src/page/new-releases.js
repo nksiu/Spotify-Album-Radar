@@ -51,16 +51,16 @@ const NewReleases = ({ token }) => {
   const myData = window.localStorage.getItem('artists');
   const updateReleases = () => {
     axios.get('http://localhost:5000/api/albums',
-    { 
-      params: {artists: myData},
-      headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-      }
-    }).then((res) => {
-      updateNewReleases(res.data);
-    });
+      {
+        params: { artists: myData },
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).then((res) => {
+        updateNewReleases(res.data);
+      });
   }
   useEffect(updateReleases, [token, myData, daysThreshold]);
 
@@ -95,12 +95,12 @@ const NewReleases = ({ token }) => {
       </form>
       <RefreshBtnWrapper>
         <RefreshBtn onClick={updateReleases}>
-          <RefreshIcon/>
+          <RefreshIcon />
         </RefreshBtn>
       </RefreshBtnWrapper>
       {
         newReleases.map(artist => (
-          <SongList artist={artist}/>
+          <SongList artist={artist} />
         ))
       }
     </Wrapper>

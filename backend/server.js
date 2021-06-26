@@ -14,18 +14,16 @@ const redirect_uri = process.env.REDIRECT_URL || 'http://localhost:5000/callback
 app.use('/api/albums', require('./routes/api/albums'));
 app.use("/api/artists", require("./routes/api/artists"));
 
+app.get('/login', function (req, res) {
+  var scopes = 'user-read-private user-read-email';
+  res.redirect('https://accounts.spotify.com/authorize' +
+    '?response_type=code' +
+    '&client_id=' + process.env.SPOTIFY_CLIENT_ID +
+    (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+    '&redirect_uri=' + encodeURIComponent(redirect_uri));
+});
 
-app.get('/login', function(req, res) {
-  res.redirect('https://accounts.spotify.com/authorize?' +
-    querystring.stringify({
-      response_type: 'code',
-      client_id: process.env.SPOTIFY_CLIENT_ID,
-      scope: 'user-read-private user-read-email',
-      redirect_uri
-    }))
-})
-
-app.get('/callback', function(req, res) {
+app.get('/callback', function (req, res) {
   const code = req.query.code || null
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -42,10 +40,10 @@ app.get('/callback', function(req, res) {
     json: true
   }
 
-  request.post(authOptions, function(err, response, body) {
+  request.post(authOptions, function (err, response, body) {
     const access_token = body.access_token
     const url = process.env.FRONTEND_URL || 'http://localhost:3000'
-    res.cookie('access_token', access_token, {domain: 'localhost', maxAge: body.expires_in, httpOnly: false})
+    res.cookie('access_token', access_token, { domain: 'localhost', maxAge: body.expires_in, httpOnly: false })
     res.redirect(url)
   })
 })

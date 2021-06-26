@@ -17,21 +17,23 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <NavBar />
+        <NavBar token={token} />
         <Switch>
           <Route exact path="/">
             <Home token={window.localStorage.getItem('access_token')} />
           </Route>
           <Route exact path="/about" component={About}></Route>
           <Route exact path='/profile'>
-            <UserManagement />
+            <UserManagement token={token}></UserManagement>
+          </Route>
+          <Route exact path='/LogOut'>
           </Route>
           <Route path='*'>
             <h1>Page Not Found</h1>
           </Route>
         </Switch>
       </Router>
-    </div>
+    </div >
   );
 }
 

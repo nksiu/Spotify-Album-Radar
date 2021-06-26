@@ -53,17 +53,29 @@ const NavMenu = styled.div`
   }
 `;
 
-// const NavBtn = styled.nav`
-//   display: flex;
-//   align-items: center;
-//   margin-right: 24px;
-
-//   @media screen and (max-width: 768px) {
-//     display: none;
-//   }
-// `;
-
 const NavBtnLink = styled(Link)`
+  border-radius: 4px;
+  background: #256cel;
+  padding: 10px 22px;
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  margin-left: 24px;
+
+  &.active {
+    color: #1db954;
+  }
+  // &:hover {
+  //   transition: all 0.2s ease-int-out;
+  //   background: #fff;
+  //   color: #1db954;
+  // }
+`;
+
+const LogOutButton = styled(Link)`
   border-radius: 4px;
   background: #256cel;
   padding: 10px 22px;
@@ -82,7 +94,12 @@ const NavBtnLink = styled(Link)`
   }
 `;
 
-export default function NavBar() {
+export default function NavBar(props) {
+  const logOut = async () => {
+    window.localStorage.setItem('access_token', '');
+    window.location.reload(true);
+  }
+
   return (
     <Nav>
       <NavLink to="./">
@@ -93,7 +110,8 @@ export default function NavBar() {
         <NavLink to="/about">
           About
         </NavLink>
-        <NavBtnLink to="/profile">Sign In</NavBtnLink>
+        <NavBtnLink to="/profile">Profile Management</NavBtnLink>
+        <LogOutButton active={props.token} to="/" onClick={() => logOut()}>Log Out</LogOutButton>
       </NavMenu>
     </Nav>
   );
