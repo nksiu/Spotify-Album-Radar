@@ -12,7 +12,7 @@ const Home = ({ token }) => {
     >
       {
         token ?
-          <NewReleases />
+          <NewReleases token={token} />
           :
           <button onClick={() => window.location='http://localhost:5000/login'}>
             Log into Spotify
