@@ -1,5 +1,16 @@
 import React from "react";
+import styled from 'styled-components'
 import NewReleases from "./new-releases";
+
+const Login = styled.button`
+  padding: 10px;
+  border-radius: 99px;
+  background-color: #1db954;
+  font-weight: 800;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+`
 
 const Home = ({ token }) => {
   return (
@@ -14,9 +25,9 @@ const Home = ({ token }) => {
         token ?
           <NewReleases token={token} />
           :
-          <button onClick={() => window.location = 'http://localhost:5000/login'}>
+          <Login onClick={() => window.location = 'http://localhost:5000/login'}>
             Log into Spotify
-          </button>
+          </Login>
       }
     </div>
   );

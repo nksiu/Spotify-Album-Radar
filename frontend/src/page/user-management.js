@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
 
 // Components
 import { ResponsiveTitle } from '../components/title';
@@ -28,17 +29,21 @@ const mockData = [
         artistName: 'Emotional Oranges',
         id: '12trz2INGglrKMzLmg0y2C'
     },
-  ]
+]
 
-const UserManagement = () => {
-    const[artistList, updateArtistList] = useState(mockData);
+const UserManagement = (props) => {
+    const [artistList, updateArtistList] = useState(mockData);
+
+    if (!props.token) {
+        return <Redirect to="/" ></Redirect>;
+    }
 
     //TODO: Add in error dialogue for duplicate entry
     const addArtist = (artist) => {
-        const newObj = {artistName: artist.label, id: artist.value};
+        const newObj = { artistName: artist.label, id: artist.value };
         if (artistList.filter(savedArtist => {
             return savedArtist.artistName === artist.label
-        }).length !== 0){
+        }).length !== 0) {
             alert("Artist is a duplicate!")
         } else {
             updateArtistList([...artistList, newObj]);
@@ -54,7 +59,7 @@ const UserManagement = () => {
     return (
         <Wrapper>
             <ResponsiveTitle>Profile Management</ResponsiveTitle>
-            <ArtistManager addArtist={addArtist}/>
+            <ArtistManager addArtist={addArtist} />
             <ArtistList artists={artistList} deleteArtist={deleteArtist}></ArtistList>
         </Wrapper>
     );

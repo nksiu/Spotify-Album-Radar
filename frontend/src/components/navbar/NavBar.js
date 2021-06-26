@@ -94,9 +94,10 @@ const LogOutButton = styled(Link)`
   }
 `;
 
-export default function NavBar() {
-  const logOut = () => {
+export default function NavBar(props) {
+  const logOut = async () => {
     window.localStorage.setItem('access_token', '');
+    window.location.reload(true);
   }
 
   return (
@@ -110,7 +111,7 @@ export default function NavBar() {
           About
         </NavLink>
         <NavBtnLink to="/profile">Profile Management</NavBtnLink>
-        <LogOutButton to="/LogOut">Log Out</LogOutButton>
+        <LogOutButton active={props.token} to="/" onClick={() => logOut()}>Log Out</LogOutButton>
       </NavMenu>
     </Nav>
   );
