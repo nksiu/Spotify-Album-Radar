@@ -3,7 +3,7 @@ const router = express.Router()
 const axios = require('axios')
 
 // How many days ago to look for new albums. Default: 7
-let numDaysFilter = 30;
+let numDaysFilter = 200;
 
 router.get('/', function(req, res) {
     // mock data
