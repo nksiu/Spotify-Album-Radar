@@ -16,11 +16,6 @@ const ArtistForm = styled.form`
   display: flex;
 `
 
-const Input = styled.input`
-  padding: 0.5vh;
-  width: 80%;
-`
-
 const Button = styled.input`
   margin: 0 auto;
   padding: 0.5vh;
@@ -42,7 +37,6 @@ const Wrapper = styled.div`
 
 function ArtistManager(props){
   const initState = "";
-  const [formValue, setFormValue] = useState(initState);
   const [artistList, setArtistList] = useState(initState);
 
   const handleSubmit = (e) => {
@@ -50,7 +44,7 @@ function ArtistManager(props){
     if (artistList.length === 0) {
       alert("No artist is selected!")
     } else {
-    artistList.forEach((artist) => props.addArtist(artist.label));
+      artistList.forEach((artist) => props.addArtist(artist));
     setArtistList(initState);
     }
   }
@@ -75,7 +69,6 @@ function ArtistManager(props){
 
   const handleInputChange = (newValue) => {
     const inputValue = newValue.replace(/\W/g, '');
-    setFormValue({ inputValue });
     return inputValue;
   };
 

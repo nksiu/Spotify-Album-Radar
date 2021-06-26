@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import axios from 'axios';
-import Cookies from 'js-cookie'
 // Components
 import { Title } from '../components/title'
 import SongList from '../components/song-list'
@@ -21,33 +20,36 @@ const RefreshBtnWrapper = styled.div`
 `
 
 const RefreshBtn = styled.button`
-  display:flex;
+  display: flex;
   float: right;
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  background-color: ${colors.white}
+  background-color: ${colors.white};
 `
 
 const RefreshIcon = styled(GrRefresh)`
   font-size: 40px;
-  padding: 0 0 5 0 ;
+  padding: 0 0 5 0;
 `
 
-const NewReleases = (props) => {
-  const token = Cookies.get('access_token');
+const NewReleases = ({ token }) => {
   const [newReleases, updateNewReleases] = useState([]);
+  const myData = window.localStorage.getItem('artists')
   const updateReleases = () => {
-    axios.get('http://localhost:5000/api/albums', { headers: {
+    axios.get('http://localhost:5000/api/albums',
+    { 
+      params: {artists: myData},
+      headers: {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    }}).then((res) => {
-      console.log(res);
+      }
+    }).then((res) => {
       updateNewReleases(res.data);
     });
   }
-  useEffect(updateReleases, [token]);
+  useEffect(updateReleases, [token, myData]);
   return (
     <Wrapper>
       <Title>

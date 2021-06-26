@@ -17,37 +17,39 @@ const Wrapper = styled.div`
 
 const mockData = [
     {
-        artistName: 'Ariana Grande'
+      artistName: 'Ariana Grande',
+      id: '66CXWjxzNUsdJxJ2JdwvnR'
     },
     {
-        artistName: 'Ed Sheeran'
-    },
+        artistName: 'Emotional Oranges',
+        id: '12trz2INGglrKMzLmg0y2C'
+      },
     {
-        artistName: 'Justin Bieber'
-    },
-    {
-        artistName: 'The Weeknd'
-    },
-]
+      artistName: 'Justin Bieber',
+      id: '1uNFoZAHBGtllmzznpCI3s'
+    }
+  ]
 
-function UserManagement() {
+const UserManagement = () => {
     const[artistList, updateArtistList] = useState(mockData);
 
     //TODO: Add in error dialogue for duplicate entry
     const addArtist = (artist) => {
-        const newObj = {artistName: artist};
+        const newObj = {artistName: artist.label, id: artist.value};
         if (artistList.filter(savedArtist => {
-            return savedArtist.artistName === artist
+            return savedArtist.artistName === artist.label
         }).length !== 0){
             alert("Artist is a duplicate!")
         } else {
             updateArtistList([...artistList, newObj]);
+            window.localStorage.setItem('artists', JSON.stringify([...artistList, newObj]))
         }
     }
 
     const deleteArtist = (i) => {
         artistList.splice(i, 1);
         updateArtistList([...artistList]);
+        window.localStorage.setItem('artists', JSON.stringify(artistList))
     }
     return (
         <Wrapper>

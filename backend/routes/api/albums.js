@@ -22,7 +22,8 @@ router.get('/', function(req, res) {
       }
     ]
     let promises = [];
-    mock.forEach((artist) => {
+    let myData = JSON.parse(req.query.artists);
+    myData.forEach((artist) => {
       let promise = axios.get(`https://api.spotify.com/v1/artists/${artist.id}/albums`, {
         params: {
           limit: 25
