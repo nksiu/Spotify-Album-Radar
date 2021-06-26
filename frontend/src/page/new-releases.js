@@ -35,7 +35,7 @@ const RefreshIcon = styled(GrRefresh)`
 
 const NewReleases = ({ token }) => {
   const [newReleases, updateNewReleases] = useState([]);
-  const myData = window.localStorage.getItem('artists')
+  const myData = window.localStorage.getItem('artists');
   const updateReleases = () => {
     axios.get('http://localhost:5000/api/albums',
     { 
