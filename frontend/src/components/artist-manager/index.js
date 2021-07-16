@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { colors, fontStyles } from '../../styles'
+import { colors, fontStyles } from '../../styles';
+import AsyncSelect from 'react-select/async';
+import axios from 'axios';
 
 const ArtistTitle = styled.h1`
   margin: 0 auto;
@@ -8,15 +10,10 @@ const ArtistTitle = styled.h1`
   margin-bottom: 20px;
 `
 
-
 const ArtistForm = styled.form`
-  margin: 0 auto;
-  width: 50%;
-`
-
-const Input = styled.input`
-  padding: 0.5vh;
-  width: 80%;
+  margin-top: 1vh;
+  align-content: center;
+  display: flex;
 `
 
 const Button = styled.input`
@@ -25,7 +22,10 @@ const Button = styled.input`
   width: 20%;
   font: ${fontStyles.default};
 `
-
+const SearchBarContainer = styled.div`
+  margin: 0 auto;
+  width: 50%;
+`
 const Wrapper = styled.div`
   width: 100%;
   padding-top: 75px;
@@ -37,26 +37,56 @@ const Wrapper = styled.div`
 
 function ArtistManager(props){
   const initState = "";
-  const [formValue, setFormValue] = useState(initState);
+  const [artistList, setArtistList] = useState(initState);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.addArtist(formValue);
-    // Clear Form
-    setFormValue(initState);
+    if (artistList.length === 0) {
+      alert("No artist is selected!")
+    } else {
+      artistList.forEach((artist) => props.addArtist(artist));
+    setArtistList(initState);
+    }
   }
 
-  const handleChange = (e) => {
-    setFormValue(e.target.value);
-  }
+  const loadOptions = (inputValue, callback) => {
+    setTimeout(() => {
+    const baseURL = "http://localhost:5000/"
+      axios({
+        url: '/api/artists',
+        baseURL: baseURL,
+        Accept: 'application/json',
+        params: {
+            "q": inputValue
+        }
+    }).then(response => {
+        callback(response.data)
+    }).catch(err => {
+        console.log("Oh no! 2+3 combo!!\n" + err);
+    })
+    }, 1000);
+  };
+
+  const handleInputChange = (newValue) => {
+    const inputValue = newValue.replace(/\W/g, '');
+    return inputValue;
+  };
 
   return (
     <Wrapper>
       <ArtistTitle>Add an Artist</ArtistTitle>
-          <ArtistForm onSubmit={handleSubmit}>
-            <Input  type="text" name='name' value={formValue} onChange={handleChange}></Input>
-            <Button className="button" type="submit" value="Add Artist"></Button>
-          </ArtistForm>
+          <SearchBarContainer>
+            <AsyncSelect 
+              isMulti
+              loadOptions={loadOptions}
+              onInputChange={handleInputChange}
+              onChange={setArtistList}
+              value={artistList}
+              />
+            <ArtistForm onSubmit={handleSubmit}>
+              <Button className="button" type="submit" value="Add Artist"></Button>
+            </ArtistForm>
+          </SearchBarContainer>
     </Wrapper>
   )
 }
