@@ -1,11 +1,16 @@
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import axios from 'axios';
+
 // Components
 import { Title } from '../components/title'
 import SongList from '../components/song-list'
-import { useEffect, useState } from 'react';
 import { GrRefresh } from 'react-icons/gr'
 import { colors, fontStyles } from '../styles';
+
+// Actions
+import { getArtists } from '../actions/userActions';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -44,11 +49,30 @@ const RefreshIcon = styled(GrRefresh)`
   padding: 0 0 5 0;
 `
 
-const NewReleases = ({ token }) => {
+const mockData = [
+  {
+      artistName: 'Ariana Grande',
+      id: '66CXWjxzNUsdJxJ2JdwvnR'
+  },
+  {
+      artistName: 'Justin Bieber',
+      id: '1uNFoZAHBGtllmzznpCI3s'
+  },
+  {
+      artistName: 'Emotional Oranges',
+      id: '12trz2INGglrKMzLmg0y2C'
+  },
+]
+
+const NewReleases = ({ token, getArtists }) => {
+  useEffect(() => {
+    getArtists(mockData)
+  }, [])
   const [newReleases, updateNewReleases] = useState([]);
   const [daysThreshold, updateDaysThreshold] = useState(200);
   const [formData, updateFormData] = useState("");
   const myData = window.localStorage.getItem('artists');
+  console.log('local artists', myData)
   const updateReleases = () => {
     axios.get('http://localhost:5000/api/albums',
       {
@@ -107,4 +131,4 @@ const NewReleases = ({ token }) => {
   )
 }
 
-export default NewReleases
+export default connect(null, {getArtists})(NewReleases)

@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import NewReleases from "./new-releases";
 
@@ -18,7 +19,8 @@ const Parent = styled.div`
   position: relative;
 `
 
-const Home = ({ token }) => {
+const Home = ({ user }) => {
+  const { accessToken } = user
   return (
     <div
       style={{
@@ -28,8 +30,8 @@ const Home = ({ token }) => {
       }}
     >
       {
-        token ?
-          <NewReleases token={token} />
+        accessToken ?
+          <NewReleases token={accessToken} />
           :
           <Parent>
             <Login onClick={() => window.location = 'http://localhost:5000/login'}>
@@ -41,4 +43,8 @@ const Home = ({ token }) => {
   );
 }
 
-export default Home
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, null)(Home)

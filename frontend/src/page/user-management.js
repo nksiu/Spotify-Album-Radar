@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { connect } from 'react-redux'
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 
@@ -5,7 +7,9 @@ import { Redirect } from 'react-router-dom';
 import { ResponsiveTitle } from '../components/title';
 import ArtistList from '../components/artist-list';
 import ArtistManager from '../components/artist-manager';
-import { useState } from 'react';
+
+// Actions
+import { addNewArtist } from '../actions/userActions';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -31,10 +35,11 @@ const mockData = [
     },
 ]
 
-const UserManagement = (props) => {
+const UserManagement = ({ user, addNewArtist }) => {
+    const { accessToken } = user
     const [artistList, updateArtistList] = useState(mockData);
 
-    if (!props.token) {
+    if (!accessToken) {
         return <Redirect to="/" ></Redirect>;
     }
 
@@ -46,6 +51,7 @@ const UserManagement = (props) => {
         }).length !== 0) {
             alert("Artist is a duplicate!")
         } else {
+            addNewArtist(newObj)
             updateArtistList([...artistList, newObj]);
             window.localStorage.setItem('artists', JSON.stringify([...artistList, newObj]))
         }
@@ -65,4 +71,8 @@ const UserManagement = (props) => {
     );
 }
 
-export default UserManagement;
+const mapStateToProps = state => ({
+    user: state.user
+  })
+
+export default connect(mapStateToProps, {addNewArtist})(UserManagement);
