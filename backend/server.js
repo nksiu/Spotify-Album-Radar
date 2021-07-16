@@ -21,9 +21,8 @@ mongoose.connect(
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
-  // we're connected!
-  console.log("connected");
+db.once("open", () => {
+  console.log("Database is connected");
 });
 
 const redirect_uri =
@@ -32,8 +31,9 @@ const redirect_uri =
 // API Endpoints
 app.use("/api/albums", require("./routes/api/albums"));
 app.use("/api/artists", require("./routes/api/artists"));
+app.use("/api/me", require("./routes/api/me"));
 
-app.get("/login", function (req, res) {
+app.get("/login", (req, res) => {
   var scopes = "user-read-private user-read-email";
   res.redirect(
     "https://accounts.spotify.com/authorize" +
@@ -46,7 +46,7 @@ app.get("/login", function (req, res) {
   );
 });
 
-app.get("/callback", function (req, res) {
+app.get("/callback", (req, res) => {
   const code = req.query.code || null;
   const authOptions = {
     url: "https://accounts.spotify.com/api/token",
@@ -67,12 +67,12 @@ app.get("/callback", function (req, res) {
     json: true,
   };
 
-  request.post(authOptions, function (err, response, body) {
+  request.post(authOptions, async (err, response, body) => {
     const access_token = body.access_token;
     const url = process.env.FRONTEND_URL || "http://localhost:3000";
     res.cookie("access_token", access_token, {
       domain: "localhost",
-      maxAge: body.expires_in,
+      maxAge: 360000,
       httpOnly: false,
     });
     res.redirect(url);
