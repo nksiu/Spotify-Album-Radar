@@ -12,7 +12,7 @@ const initialState = {
   artists: []
 }
 
-export default function(state = initialState, action) {
+const userReducer = function(state = initialState, action) {
   switch(action.type) {
     case LOGIN:
       return {
@@ -43,3 +43,5 @@ export default function(state = initialState, action) {
       return state
   }
 }
+
+export default userReducer;

@@ -24,7 +24,7 @@ function App({ login }) {
     if (session) {
       login(session)
     }
-  }, [])
+  }, [login])
 
   return (
     <div className="App">

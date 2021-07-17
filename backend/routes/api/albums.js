@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-
-// How many days ago to look for new albums. Default: 7
-let numDaysFilter = 200;
+const User = require('../../models/user')
 
 router.get("/", function (req, res) {
   // mock data
@@ -51,36 +49,50 @@ router.get("/", function (req, res) {
 
     let currDate = new Date();
     let filterDate = new Date();
-    filterDate.setDate(currDate.getDate() - numDaysFilter);
-
-    let retArr = [];
-    resultArr = resultArr.map((result) => {
-      let filteredAlbums = result.value.data.items.filter((album) => {
-        let albumReleaseDate = new Date(album.release_date);
-        return albumReleaseDate > filterDate && albumReleaseDate < currDate;
+    let userID = req.query.userID;
+    User.findOne({userID: userID}).then((data) => {
+      let numDaysFilter = data.numDays;
+      filterDate.setDate(currDate.getDate() - numDaysFilter);
+  
+      let retArr = [];
+      resultArr = resultArr.map((result) => {
+        let filteredAlbums = result.value.data.items.filter((album) => {
+          let albumReleaseDate = new Date(album.release_date);
+          return albumReleaseDate > filterDate && albumReleaseDate < currDate;
+        });
+        let cleanAlbums = filteredAlbums.map((album) => {
+          return {
+            image: album.images[0].url,
+            name: album.name,
+            release_date: album.release_date,
+            url: album.external_urls.spotify,
+          };
+        });
+        retArr.push({
+          artistName: result.value.data.items[0].artists[0].name,
+          songs: cleanAlbums,
+        });
       });
-      let cleanAlbums = filteredAlbums.map((album) => {
-        return {
-          image: album.images[0].url,
-          name: album.name,
-          release_date: album.release_date,
-          url: album.external_urls.spotify,
-        };
-      });
-      retArr.push({
-        artistName: result.value.data.items[0].artists[0].name,
-        songs: cleanAlbums,
-      });
-    });
-    res.send(retArr);
+      res.send(retArr);
+    })
   });
 });
 
-router.put("/days/:days", function (req, res) {
-  let newDays = req.params.days;
+router.get("/days", function (req, res) {
+  let userID = req.query.userID;
+  User.findOne({userID: userID}).then((data) => {
+    res.send({numDays: data.numDays});
+  })
+});
+
+router.put("/days", function (req, res) {
+  let userID = req.query.userID;
+  let newDays = req.query.days;
   if (!isNaN(newDays)) {
-    numDaysFilter = newDays;
-    res.send(newDays);
+    User.findOneAndUpdate(
+      {userID: userID},
+      {numDays: newDays}
+      ).then(() => res.send(newDays));
   } else {
     res.status(400);
     res.send("Bad Request, days must be number");

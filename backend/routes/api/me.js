@@ -22,6 +22,7 @@ router.get("/", async (req, res) => {
         user: data.data.display_name,
         userID: userId,
         artists: [],
+        numDays: 200,
       });
       newUser
         .save()
