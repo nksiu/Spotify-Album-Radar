@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
-
+mongoose.set('useFindAndModify', false);
 mongoose.connect(
   "mongodb+srv://" +
     process.env.DB_USER +

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { fontStyles } from '../../styles';
 
 const ArtistRow = styled.tr`
     padding: 10vh;
@@ -11,12 +12,14 @@ const ArtistWrapper = styled.td`
 `
 
 const ArtistName = styled.h4`
+  font-family: ${fontStyles.subtitle};
   font-size: 20px;
   margin-left: 20px;
   letter-spacing: 1px;
 `
 
 const DeleteButton = styled.div`
+    min-width: 30px;
     &:hover {
         transition-duration: 0.45s;
         background-color: gray;

@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 //Components
@@ -18,13 +18,32 @@ const ArtistTableBody = styled.tbody`
 `
 
 function ArtistList(props) {
+    const [artistList, updateArtistList] = useState(props.artists);
+    const [formInput, updateForm] = useState("");
+
+    useEffect(() => {
+        updateArtistList(props.artists)
+    }, [props.artists]);
+
+    const onChange = (e) => {
+        updateForm(e.target.value);
+        return false;
+    }
+
+    useEffect(() => {
+        const filteredArtists = props.artists.filter((artist)=> {
+            return artist.artistName.toLowerCase().includes(formInput.toLowerCase());
+        });
+        updateArtistList(filteredArtists);
+    }, [formInput, props.artists]);
+
     return (
         <Fragment>
             <CenteredSubTitle>Subscribed Artists</CenteredSubTitle>
-            <SearchBar/>
+            <SearchBar onChange={onChange}/>
             <ArtistTable>
                 <ArtistTableBody>
-                {props.artists.map((artist, i) => 
+                {artistList.map((artist, i) => 
                 <Artist key = {artist.artistName} artistName={artist.artistName} index={i} deleteArtist={props.deleteArtist} />
                 )}
                 </ArtistTableBody>

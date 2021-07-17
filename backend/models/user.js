@@ -4,6 +4,7 @@ let user = new mongoose.Schema({
   user: String,
   userID: String,
   artists: [],
+  numDays: Number,
 });
 
 let userData = mongoose.model("userData", user);
