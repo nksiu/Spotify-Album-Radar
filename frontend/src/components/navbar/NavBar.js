@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux"
 import styled from "styled-components";
+import { fontStyles, colors } from "../../styles";
 import { NavLink as Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import Cookies from 'js-cookie'
@@ -10,11 +11,15 @@ import { logout } from '../../actions/userActions'
 
 const Nav = styled.nav`
   background: #000;
-  height: 80px;
+  height: 6vh;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem calc((100vw - 1000px) / 2);
   z-index: 10;
+`;
+
+const Title = styled.h1`
+  font-family: ${fontStyles.title};
 `;
 
 const NavLink = styled(Link)`
@@ -29,7 +34,7 @@ const NavLink = styled(Link)`
   margin-right: 3px;
 
   &.active {
-    color: #1db954;
+    color: ${colors.green};
   }
 `;
 
@@ -69,15 +74,17 @@ const NavBtnLink = styled(Link)`
   text-decoration: none;
   margin-left: 3px;
   margin-right: 3px;
+  font-family: ${fontStyles.subtitle};
+  font-size: 14px;
 
   &.active {
-    color: #1db954;
+    color: ${colors.green};
   }
-  // &:hover {
-  //   transition: all 0.2s ease-int-out;
-  //   background: #fff;
-  //   color: #1db954;
-  // }
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color: ${colors.green};
+  }
 `;
 
 const LogOutButton = styled(Link)`
@@ -92,11 +99,13 @@ const LogOutButton = styled(Link)`
   text-decoration: none;
   margin-left: 3px;
   margin-right: 3px;
+  font-family: ${fontStyles.subtitle};
+  font-size: 14px;
 
   &:hover {
     transition: all 0.2s ease-int-out;
     background: #fff;
-    color: #1db954;
+    color: ${colors.green};
   }
 `;
 
@@ -111,13 +120,13 @@ const NavBar = ({ user, logout }) => {
   return (
     <Nav>
       <NavLink to="./">
-        <h1>Spotify Album Radar</h1>
+        <Title>Spotify Album Radar</Title>
       </NavLink>
       <Bars />
       <NavMenu>
-        <NavLink to="/about">
+        <NavBtnLink to="/about">
           About
-        </NavLink>
+        </NavBtnLink>
         <NavBtnLink to="/profile">Profile Management</NavBtnLink>
         {
           accessToken ?
