@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Cookies from 'js-cookie'
 
@@ -7,24 +9,34 @@ import Home from "./page/Home";
 import About from "./page/About";
 import UserManagement from "./page/user-management";
 
+// Actions
+import { login } from './actions/userActions'
 
-function App() {
-  const token = Cookies.get('access_token')
-  if (token) {
-    window.localStorage.setItem('access_token', token)
-  }
+
+function App({ login }) {
+  useEffect(() => {
+    const token = Cookies.get('access_token')
+    const session = window.localStorage.getItem('access_token')
+    if (token) {
+      window.localStorage.setItem('access_token', token)
+      login(token)
+    }
+    if (session) {
+      login(session)
+    }
+  }, [])
 
   return (
     <div className="App">
       <Router>
-        <NavBar token={token} />
+        <NavBar />
         <Switch>
           <Route exact path="/">
-            <Home token={window.localStorage.getItem('access_token')} />
+            <Home />
           </Route>
           <Route exact path="/about" component={About}></Route>
           <Route exact path='/profile'>
-            <UserManagement token={token}></UserManagement>
+            <UserManagement></UserManagement>
           </Route>
           <Route exact path='/LogOut'>
           </Route>
@@ -37,4 +49,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(null, {login})(App);

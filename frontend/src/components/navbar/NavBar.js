@@ -1,8 +1,13 @@
 import React from "react";
+import { connect } from "react-redux"
 import styled from "styled-components";
 import { fontStyles, colors } from "../../styles";
 import { NavLink as Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
+import Cookies from 'js-cookie'
+
+// Actions
+import { logout } from '../../actions/userActions'
 
 const Nav = styled.nav`
   background: #000;
@@ -104,10 +109,12 @@ const LogOutButton = styled(Link)`
   }
 `;
 
-export default function NavBar(props) {
-  const logOut = async () => {
-    await window.localStorage.setItem('access_token', '');
-    window.location.reload(true);
+const NavBar = ({ user, logout }) => {
+  const { accessToken } = user
+  const logOut = () => {
+    Cookies.remove('access_token')
+    window.localStorage.setItem('access_token', '');
+    logout()
   }
 
   return (
@@ -121,8 +128,19 @@ export default function NavBar(props) {
           About
         </NavBtnLink>
         <NavBtnLink to="/profile">Profile Management</NavBtnLink>
-        <LogOutButton active={props.token} to="/" onClick={() => logOut()}>Log Out</LogOutButton>
+        {
+          accessToken ?
+            <LogOutButton to="/" onClick={logOut}>Log Out</LogOutButton>
+          :
+          null
+        }
       </NavMenu>
     </Nav>
   );
 }
+
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, {logout})(NavBar);
