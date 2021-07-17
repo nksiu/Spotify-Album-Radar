@@ -2,7 +2,8 @@ import {
   LOGIN,
   LOGOUT,
   ADD_ARTIST,
-  GET_ARTISTS
+  GET_ARTISTS,
+  DELETE_ARTIST
 } from './types'
 import axios from 'axios'
 
@@ -42,8 +43,35 @@ export const getArtists = (artists) => dispatch => {
 }
 
 export const addNewArtist = (artist) => (dispatch, getState) => {
-  dispatch({
-    type: ADD_ARTIST,
-    payload: artist
+  axios({        
+    method: 'put',
+    url: '/api/artists/add',
+    baseURL: 'http://localhost:5000',
+    Accept: 'application/json',
+    params: {
+        "artist": artist
+    }
+  }).then((res) => {
+    dispatch({
+      type: ADD_ARTIST,
+      payload: artist
+    })
+  })
+}
+
+export const deleteArtist = (artist) => (dispatch, getState) => {
+  axios({        
+    method: 'delete',
+    url: '/api/artists/delete',
+    baseURL: 'http://localhost:5000',
+    Accept: 'application/json',
+    params: {
+        "artist": artist
+    }
+  }).then((res) => {
+    dispatch({
+      type: DELETE_ARTIST,
+      payload: artist
+    })
   })
 }

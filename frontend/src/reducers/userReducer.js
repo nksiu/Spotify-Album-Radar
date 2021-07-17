@@ -34,6 +34,11 @@ export default function(state = initialState, action) {
         ...state,
         artists: [...state.artists, action.payload]
       }
+    case DELETE_ARTIST:
+      return {
+        ...state,
+        artists: state.artists.filter(artist => artist.id !== action.payload.id)
+      }
     default:
       return state
   }

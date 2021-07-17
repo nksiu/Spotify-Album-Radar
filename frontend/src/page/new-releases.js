@@ -49,10 +49,7 @@ const RefreshIcon = styled(GrRefresh)`
   padding: 0 0 5 0;
 `
 
-const NewReleases = ({ token, user, getArtists }) => {
-  useEffect(() => {
-    getArtists(user.artists)
-  }, [])
+const NewReleases = ({ token, user }) => {
   const [newReleases, updateNewReleases] = useState([]);
   const [daysThreshold, updateDaysThreshold] = useState(200);
   const [formData, updateFormData] = useState("");

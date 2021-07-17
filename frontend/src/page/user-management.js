@@ -9,7 +9,7 @@ import ArtistList from '../components/artist-list';
 import ArtistManager from '../components/artist-manager';
 
 // Actions
-import { addNewArtist } from '../actions/userActions';
+import { addNewArtist, deleteArtist } from '../actions/userActions';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -20,24 +20,9 @@ const Wrapper = styled.div`
   justify-content: flex-start;
 `
 
-const mockData = [
-    {
-        artistName: 'Ariana Grande',
-        id: '66CXWjxzNUsdJxJ2JdwvnR'
-    },
-    {
-        artistName: 'Justin Bieber',
-        id: '1uNFoZAHBGtllmzznpCI3s'
-    },
-    {
-        artistName: 'Emotional Oranges',
-        id: '12trz2INGglrKMzLmg0y2C'
-    },
-]
-
-const UserManagement = ({ user, addNewArtist }) => {
-    const { accessToken } = user
-    const [artistList, updateArtistList] = useState(mockData);
+const UserManagement = ({ user, addNewArtist, deleteArtist }) => {
+    const { accessToken, userId, artists } = user
+    const [artistList, updateArtistList] = useState(artists);
 
     if (!accessToken) {
         return <Redirect to="/" ></Redirect>;
@@ -45,7 +30,7 @@ const UserManagement = ({ user, addNewArtist }) => {
 
     //TODO: Add in error dialogue for duplicate entry
     const addArtist = (artist) => {
-        const newObj = { artistName: artist.label, id: artist.value };
+        const newObj = { userId, artistName: artist.label, id: artist.value };
         if (artistList.filter(savedArtist => {
             return savedArtist.artistName === artist.label
         }).length !== 0) {
@@ -53,20 +38,20 @@ const UserManagement = ({ user, addNewArtist }) => {
         } else {
             addNewArtist(newObj)
             updateArtistList([...artistList, newObj]);
-            window.localStorage.setItem('artists', JSON.stringify([...artistList, newObj]))
         }
     }
 
-    const deleteArtist = (i) => {
+    const unSubscribeArtist = (i) => {
+        const newObj = {userId, ...artistList[i]}
+        deleteArtist(newObj)
         artistList.splice(i, 1);
         updateArtistList([...artistList]);
-        window.localStorage.setItem('artists', JSON.stringify(artistList))
     }
     return (
         <Wrapper>
             <ResponsiveTitle>Profile Management</ResponsiveTitle>
             <ArtistManager addArtist={addArtist} />
-            <ArtistList artists={artistList} deleteArtist={deleteArtist}></ArtistList>
+            <ArtistList artists={artistList} deleteArtist={unSubscribeArtist}></ArtistList>
         </Wrapper>
     );
 }
@@ -75,4 +60,4 @@ const mapStateToProps = state => ({
     user: state.user
   })
 
-export default connect(mapStateToProps, {addNewArtist})(UserManagement);
+export default connect(mapStateToProps, {addNewArtist, deleteArtist})(UserManagement);
