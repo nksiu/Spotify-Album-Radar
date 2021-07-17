@@ -49,34 +49,17 @@ const RefreshIcon = styled(GrRefresh)`
   padding: 0 0 5 0;
 `
 
-const mockData = [
-  {
-      artistName: 'Ariana Grande',
-      id: '66CXWjxzNUsdJxJ2JdwvnR'
-  },
-  {
-      artistName: 'Justin Bieber',
-      id: '1uNFoZAHBGtllmzznpCI3s'
-  },
-  {
-      artistName: 'Emotional Oranges',
-      id: '12trz2INGglrKMzLmg0y2C'
-  },
-]
-
-const NewReleases = ({ token, getArtists }) => {
+const NewReleases = ({ token, user, getArtists }) => {
   useEffect(() => {
-    getArtists(mockData)
+    getArtists(user.artists)
   }, [])
   const [newReleases, updateNewReleases] = useState([]);
   const [daysThreshold, updateDaysThreshold] = useState(200);
   const [formData, updateFormData] = useState("");
-  const myData = window.localStorage.getItem('artists');
-  console.log('local artists', myData)
   const updateReleases = () => {
     axios.get('http://localhost:5000/api/albums',
       {
-        params: { artists: myData },
+        params: { artists: JSON.stringify(user.artists) },
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -86,7 +69,7 @@ const NewReleases = ({ token, getArtists }) => {
         updateNewReleases(res.data);
       });
   }
-  useEffect(updateReleases, [token, myData, daysThreshold]);
+  useEffect(updateReleases, [token, daysThreshold]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -131,4 +114,8 @@ const NewReleases = ({ token, getArtists }) => {
   )
 }
 
-export default connect(null, {getArtists})(NewReleases)
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, {getArtists})(NewReleases)

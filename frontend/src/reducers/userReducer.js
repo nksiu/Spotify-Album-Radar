@@ -16,13 +16,12 @@ export default function(state = initialState, action) {
   switch(action.type) {
     case LOGIN:
       return {
-        ...state,
-        accessToken: action.payload
+        ...action.payload
       }
     case LOGOUT:
       return {
-        ...state,
         accessToken: '',
+        userId: '',
         artists: []
       }
     case GET_ARTISTS:
