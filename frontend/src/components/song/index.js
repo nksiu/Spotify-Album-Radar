@@ -19,12 +19,22 @@ const Container = styled.div`
   align-items: center;
 `
 
+const SongInfoContainer = styled.div`
+
+`
+
 const Image = styled.img`
   height: 60px;
 `
 
 const SongName = styled.h4`
   font-size: 20px;
+  margin-left: 20px;
+  letter-spacing: 1px;
+`
+
+const SongRelease = styled.h5`
+  font-size: 16px;
   margin-left: 20px;
   letter-spacing: 1px;
 `
@@ -43,7 +53,10 @@ const Song = ({ songInfo }) => {
     <SongWrapper>
       <Container>
         <Image src={songInfo.image} alt="album art" />
-        <SongName>{songInfo.name}</SongName>
+        <SongInfoContainer>
+          <SongName>{songInfo.name}</SongName>
+          <SongRelease>Release Date: {songInfo.release_date}</SongRelease>
+        </SongInfoContainer>
       </Container>
       <Container>
         <a href={songInfo.url}>
