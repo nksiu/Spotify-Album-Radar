@@ -7,29 +7,29 @@ require("dotenv").config();
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  if (!req.params.access_token) {
+  if (!req.query.access_token) {
     res.redirect("http://localhost:5000/login");
   }
   let data = await axios.get("https://api.spotify.com/v1/me", {
-    headers: { Authorization: "Bearer " + req.params.access_token },
-  }).data;
+    headers: { Authorization: "Bearer " + req.query.access_token },
+  });
 
   // Todo save: email: data.email, imgUrl: data.images.url
-  let userId = data.id;
-  User.find({ userID: userId }).then((user) => {
+  let userId = data.data.id;
+  User.find({ userID: data.data.id }).then((user) => {
     if (user.length == 0) {
       let newUser = new User({
-        user: data.display_name,
+        user: data.data.display_name,
         userID: userId,
         artists: [],
       });
       newUser
         .save()
         .then(() =>
-          res.json({ id: data.id, name: data.display_name, artists: [] })
+          res.json({ id: data.data.id, name: data.data.display_name, artists: [] })
         );
     } else {
-      res.json({ id: data.id, name: data.display_name, artists: user.artists });
+      res.json({ id: user[0].userID, name: user[0].user, artists: user[0].artists });
     }
   });
 });

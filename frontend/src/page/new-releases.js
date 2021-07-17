@@ -1,11 +1,16 @@
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import axios from 'axios';
+
 // Components
 import { Title } from '../components/title'
 import SongList from '../components/song-list'
-import { useEffect, useState } from 'react';
 import { GrRefresh } from 'react-icons/gr'
 import { colors, fontStyles } from '../styles';
+
+// Actions
+import { getArtists } from '../actions/userActions';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -44,15 +49,14 @@ const RefreshIcon = styled(GrRefresh)`
   padding: 0 0 5 0;
 `
 
-const NewReleases = ({ token }) => {
+const NewReleases = ({ token, user }) => {
   const [newReleases, updateNewReleases] = useState([]);
   const [daysThreshold, updateDaysThreshold] = useState(200);
   const [formData, updateFormData] = useState("");
-  const myData = window.localStorage.getItem('artists');
   const updateReleases = () => {
     axios.get('http://localhost:5000/api/albums',
       {
-        params: { artists: myData },
+        params: { artists: JSON.stringify(user.artists) },
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -62,7 +66,7 @@ const NewReleases = ({ token }) => {
         updateNewReleases(res.data);
       });
   }
-  useEffect(updateReleases, [token, myData, daysThreshold]);
+  useEffect(updateReleases, [token, daysThreshold]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -107,4 +111,8 @@ const NewReleases = ({ token }) => {
   )
 }
 
-export default NewReleases
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, {getArtists})(NewReleases)

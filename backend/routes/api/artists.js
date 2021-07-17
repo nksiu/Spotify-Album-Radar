@@ -1,6 +1,7 @@
 const express = require('express')
 const querystring = require('querystring')
 const axios = require('axios');
+const User = require('../../models/user')
 require('dotenv').config()
 
 const router = express.Router()
@@ -62,5 +63,29 @@ router.get('/', async function(req,res) {
 
     res.json(ret);
   })
+
+router.put('/add', (req, res) => {
+  const newArtist = JSON.parse(req.query.artist)
+  const myArtist = {
+    artistName: newArtist.artistName,
+    id: newArtist.id
+  }
+  User.findOneAndUpdate(
+    { userID: newArtist.userId },
+    { $push: {artists: myArtist} }
+    ).then(artist => res.json(artist))
+})
+
+router.delete('/delete', (req, res) => {
+  const newArtist = JSON.parse(req.query.artist)
+  const myArtist = {
+    artistName: newArtist.artistName,
+    id: newArtist.id
+  }
+  User.findOneAndUpdate(
+    {userID: newArtist.userId},
+    { $pull: {artists: myArtist}} 
+    ).then(data => res.json({success: true}))
+})
 
 module.exports = router;
