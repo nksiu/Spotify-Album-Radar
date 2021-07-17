@@ -4,25 +4,11 @@ const axios = require("axios");
 const User = require('../../models/user')
 
 router.get("/", function (req, res) {
-  // mock data
-  const mock = [
-    {
-      artistName: "Ariana Grande",
-      id: "66CXWjxzNUsdJxJ2JdwvnR",
-    },
-    {
-      artistName: "Justin Bieber",
-      id: "1uNFoZAHBGtllmzznpCI3s",
-    },
-    {
-      artistName: "Emotional Oranges",
-      id: "12trz2INGglrKMzLmg0y2C",
-    },
-  ];
   let promises = [];
   let myData;
   if (req.query.artists == undefined) {
-    myData = mock;
+    res.send([]);
+    return;
   } else {
     myData = JSON.parse(req.query.artists);
   }
@@ -45,7 +31,11 @@ router.get("/", function (req, res) {
 
   Promise.allSettled(promises).then((resultArr) => {
     // Only handle fulfilled requests
-    resultArr = resultArr.filter((result) => result.status == "fulfilled");
+    resultArr = resultArr.filter((result) => {
+      if (result.status != 'fulfilled') {
+        console.log("Request to retrieve song failed");
+      }
+      return result.status == "fulfilled"});
 
     let currDate = new Date();
     let filterDate = new Date();
