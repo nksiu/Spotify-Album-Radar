@@ -63,6 +63,7 @@ router.get("/", function (req, res) {
         return {
           image: album.images[0].url,
           name: album.name,
+          release_date: album.release_date,
           url: album.external_urls.spotify,
         };
       });
