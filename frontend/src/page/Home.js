@@ -1,36 +1,24 @@
 import React from "react";
-import styled from 'styled-components'
+import { connect } from 'react-redux'
 import NewReleases from "./new-releases";
+import Splash from '../components/splash';
 
-const Login = styled.button`
-  padding: 10px;
-  border-radius: 99px;
-  background-color: #1db954;
-  font-weight: 800;
-  color: white;
-  text-decoration: none;
-  text-align: center;
-`
-
-const Home = ({ token }) => {
+const Home = ({ user }) => {
+  const { accessToken } = user
   return (
-    <div
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        height: "90vh",
-      }}
-    >
+    <div>
       {
-        token ?
-          <NewReleases token={token} />
+        accessToken ?
+          <NewReleases token={accessToken} />
           :
-          <Login onClick={() => window.location = 'http://localhost:5000/login'}>
-            Log into Spotify
-          </Login>
+          <Splash/>
       }
     </div>
   );
 }
 
-export default Home
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, null)(Home)

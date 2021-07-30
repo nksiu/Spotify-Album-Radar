@@ -1,11 +1,15 @@
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import axios from 'axios';
+
 // Components
 import { Title } from '../components/title'
 import SongList from '../components/song-list'
-import { useEffect, useState } from 'react';
-import { GrRefresh } from 'react-icons/gr'
 import { colors, fontStyles } from '../styles';
+
+// Actions
+import { getArtists } from '../actions/userActions';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -14,6 +18,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+`
+
+const Form = styled.form`
+  margin-bottom: 20px;
 `
 
 const Button = styled.button`
@@ -26,33 +34,28 @@ const Button = styled.button`
   font-size:14px;
 `
 
-const RefreshBtnWrapper = styled.div`
-  padding-right: 75px;
-`
 
-const RefreshBtn = styled.button`
-  display: flex;
-  float: right;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  background-color: ${colors.white};
-`
-
-const RefreshIcon = styled(GrRefresh)`
-  font-size: 40px;
-  padding: 0 0 5 0;
-`
-
-const NewReleases = ({ token }) => {
+const NewReleases = ({ token, user }) => {
   const [newReleases, updateNewReleases] = useState([]);
-  const [daysThreshold, updateDaysThreshold] = useState(200);
+  const [daysThreshold, updateDaysThreshold] = useState(0);
+  const getDays = () => {
+    return axios.get('http://localhost:5000/api/albums/days',
+      {
+        params: { userID: user.userId },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).then((res) => {
+        updateDaysThreshold(res.data.numDays);
+      });
+  }
+
   const [formData, updateFormData] = useState("");
-  const myData = window.localStorage.getItem('artists');
   const updateReleases = () => {
     axios.get('http://localhost:5000/api/albums',
       {
-        params: { artists: myData },
+        params: {  userID: user.userId, artists: JSON.stringify(user.artists) },
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -62,7 +65,8 @@ const NewReleases = ({ token }) => {
         updateNewReleases(res.data);
       });
   }
-  useEffect(updateReleases, [token, myData, daysThreshold]);
+  useEffect(updateReleases, [token, daysThreshold, user.artists, user.userId]);
+  useEffect(getDays, [user.userId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,10 +75,18 @@ const NewReleases = ({ token }) => {
     if (isNaN(newDays)) {
       alert('Please enter a number!')
     } else {
-      axios.put(`http://localhost:5000/api/albums/days/${newDays}`, )
-      .then((res) => {
+      axios({        
+        method: 'put',
+        url: '/api/albums/days',
+        baseURL: 'http://localhost:5000',
+        Accept: 'application/json',
+        params: {
+            "userID": user.userId,
+            "days": newDays,
+        }
+      }).then((res) => {
         updateDaysThreshold(res.data);
-      });
+      })
     }
   }
 
@@ -88,23 +100,22 @@ const NewReleases = ({ token }) => {
         New Releases
       </Title>
       <h3>Finding Newest Releases from the past: {daysThreshold} days</h3>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <label>How many days of past new releases would you like to see? </label>
         <input name='days' value={formData} onChange={handleChange}></input>
         <Button className="button" type="submit">Submit</Button>
-      </form>
-      <RefreshBtnWrapper>
-        <RefreshBtn onClick={updateReleases}>
-          <RefreshIcon />
-        </RefreshBtn>
-      </RefreshBtnWrapper>
+      </Form>
       {
-        newReleases.map(artist => (
-          <SongList artist={artist} />
+        newReleases.map((artist, i) => (
+          <SongList key={i} artist={artist} />
         ))
       }
     </Wrapper>
   )
 }
 
-export default NewReleases
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, {getArtists})(NewReleases)

@@ -1,14 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { colors, fontStyles } from '../../styles';
+import { fontStyles } from '../../styles';
+import { CenteredSubTitle } from '../title';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
-
-const ArtistTitle = styled.h1`
-  margin: 0 auto;
-  color: ${colors.black};
-  margin-bottom: 20px;
-`
 
 const ArtistForm = styled.form`
   margin-top: 1vh;
@@ -74,7 +69,7 @@ function ArtistManager(props){
 
   return (
     <Wrapper>
-      <ArtistTitle>Add an Artist</ArtistTitle>
+      <CenteredSubTitle>Add an Artist</CenteredSubTitle>
           <SearchBarContainer>
             <AsyncSelect 
               isMulti

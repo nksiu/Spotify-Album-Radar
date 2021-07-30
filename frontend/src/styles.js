@@ -5,6 +5,8 @@ const colors = {
 }
 
 const fontStyles = {
+  title: "Georgia",
+  subtitle: "Arial",
   default: "Open Sans"
 }
 
