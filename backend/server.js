@@ -34,7 +34,7 @@ app.use("/api/artists", require("./routes/api/artists"));
 app.use("/api/me", require("./routes/api/me"));
 
 app.get("/login", (req, res) => {
-  var scopes = "user-read-private user-read-email";
+  var scopes = "user-read-private user-read-email playlist-read-private playlist-read-collaborative";
   res.redirect(
     "https://accounts.spotify.com/authorize" +
       "?response_type=code" +

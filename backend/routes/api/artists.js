@@ -88,4 +88,23 @@ router.delete('/delete', (req, res) => {
     ).then(data => res.json({success: true}))
 })
 
+router.get('/playlists', async function(req, res) {
+  const playlistList = await axios({
+    url: 'https://api.spotify.com/v1/me/playlists',
+    headers: {
+      'Authorization': "Bearer " + req.query.token
+    },
+    params: {
+      "limit": 30
+    }
+  }).then(response => {
+    return response.data.items;
+  })
+
+  let ret = playlistList.map(playlist => {
+    return {"label": playlist.name, "value": playlist.id}
+  })
+  res.json(ret);
+})
+
 module.exports = router;

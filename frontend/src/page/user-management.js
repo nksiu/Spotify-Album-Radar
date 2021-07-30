@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import { ResponsiveTitle } from '../components/title';
 import ArtistList from '../components/artist-list';
 import ArtistManager from '../components/artist-manager';
+import PlaylistManager from '../components/playlist-manager'
 
 // Actions
 import { addNewArtist, deleteArtist } from '../actions/userActions';
@@ -18,6 +19,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  padding-bottom: 75px;
 `
 
 const UserManagement = ({ user, addNewArtist, deleteArtist }) => {
@@ -50,6 +52,7 @@ const UserManagement = ({ user, addNewArtist, deleteArtist }) => {
     return (
         <Wrapper>
             <ResponsiveTitle>Profile Management</ResponsiveTitle>
+            <PlaylistManager addArtist={addArtist} token={accessToken}/>
             <ArtistManager addArtist={addArtist} />
             <ArtistList artists={artistList} deleteArtist={unSubscribeArtist}></ArtistList>
         </Wrapper>
