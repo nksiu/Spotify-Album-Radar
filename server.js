@@ -8,13 +8,15 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
+app.use(express.static("public"));
+
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
   "mongodb+srv://" +
-    process.env.DB_USER +
-    ":" +
-    process.env.DB_PASS +
-    "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  process.env.DB_USER +
+  ":" +
+  process.env.DB_PASS +
+  "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
@@ -37,12 +39,12 @@ app.get("/login", (req, res) => {
   var scopes = "user-read-private user-read-email playlist-read-private playlist-read-collaborative";
   res.redirect(
     "https://accounts.spotify.com/authorize" +
-      "?response_type=code" +
-      "&client_id=" +
-      process.env.SPOTIFY_CLIENT_ID +
-      (scopes ? "&scope=" + encodeURIComponent(scopes) : "") +
-      "&redirect_uri=" +
-      encodeURIComponent(redirect_uri)
+    "?response_type=code" +
+    "&client_id=" +
+    process.env.SPOTIFY_CLIENT_ID +
+    (scopes ? "&scope=" + encodeURIComponent(scopes) : "") +
+    "&redirect_uri=" +
+    encodeURIComponent(redirect_uri)
   );
 });
 
@@ -60,8 +62,8 @@ app.get("/callback", (req, res) => {
         "Basic " +
         new Buffer.from(
           process.env.SPOTIFY_CLIENT_ID +
-            ":" +
-            process.env.SPOTIFY_CLIENT_SECRET
+          ":" +
+          process.env.SPOTIFY_CLIENT_SECRET
         ).toString("base64"),
     },
     json: true,

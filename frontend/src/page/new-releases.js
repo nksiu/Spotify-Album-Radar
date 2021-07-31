@@ -39,7 +39,7 @@ const NewReleases = ({ token, user }) => {
   const [newReleases, updateNewReleases] = useState([]);
   const [daysThreshold, updateDaysThreshold] = useState(0);
   const getDays = () => {
-    return axios.get('http://localhost:5000/api/albums/days',
+    return axios.get('/api/albums/days',
       {
         params: { userID: user.userId },
         headers: {
@@ -53,9 +53,9 @@ const NewReleases = ({ token, user }) => {
 
   const [formData, updateFormData] = useState("");
   const updateReleases = () => {
-    axios.get('http://localhost:5000/api/albums',
+    axios.get('/api/albums',
       {
-        params: {  userID: user.userId, artists: JSON.stringify(user.artists) },
+        params: { userID: user.userId, artists: JSON.stringify(user.artists) },
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -75,14 +75,13 @@ const NewReleases = ({ token, user }) => {
     if (isNaN(newDays)) {
       alert('Please enter a number!')
     } else {
-      axios({        
+      axios({
         method: 'put',
         url: '/api/albums/days',
-        baseURL: 'http://localhost:5000',
         Accept: 'application/json',
         params: {
-            "userID": user.userId,
-            "days": newDays,
+          "userID": user.userId,
+          "days": newDays,
         }
       }).then((res) => {
         updateDaysThreshold(res.data);
@@ -118,4 +117,4 @@ const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps, {getArtists})(NewReleases)
+export default connect(mapStateToProps, { getArtists })(NewReleases)
