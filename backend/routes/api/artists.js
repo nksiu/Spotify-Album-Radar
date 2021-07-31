@@ -2,6 +2,7 @@ const express = require('express')
 const querystring = require('querystring')
 const axios = require('axios');
 const User = require('../../models/user')
+const playlistHelper = require('../../helpers/playlistHelper');
 require('dotenv').config()
 
 const router = express.Router()
@@ -70,6 +71,7 @@ router.put('/add', (req, res) => {
     artistName: newArtist.artistName,
     id: newArtist.id
   }
+  playlistHelper.updateTrackedArtists([myArtist]);
   User.findOneAndUpdate(
     { userID: newArtist.userId },
     { $push: {artists: myArtist} }
@@ -105,6 +107,9 @@ router.get('/playlists', async function(req, res) {
     return {"label": playlist.name, "value": playlist.id}
   })
   res.json(ret);
+})
+
+router.get('/testdebug', (req, res) => {
 })
 
 module.exports = router;

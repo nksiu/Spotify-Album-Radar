@@ -3,6 +3,7 @@ import {
   LOGOUT,
   ADD_ARTIST,
   GET_ARTISTS,
+  ADD_ARTIST_FROM_PLAYLIST,
   DELETE_ARTIST
 } from './types'
 import axios from 'axios'
@@ -72,6 +73,26 @@ export const deleteArtist = (artist) => (dispatch, getState) => {
     dispatch({
       type: DELETE_ARTIST,
       payload: artist
+    })
+  })
+}
+
+export const addArtistsFromPlaylist = (token, playlist) => (dispatch, getState) => {
+
+  const payload = {
+    playlist: playlist.id,
+    userId: playlist.userId,
+    token: token
+  }
+  axios({        
+    method: 'put',
+    url: '/api/playlist/add',
+    baseURL: 'http://localhost:5000',
+    data: payload,
+  }).then((res) => {
+    dispatch({
+      type: ADD_ARTIST_FROM_PLAYLIST,
+      payload: res.data
     })
   })
 }

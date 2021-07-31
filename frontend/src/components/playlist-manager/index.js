@@ -36,11 +36,11 @@ function PlaylistManager(props){
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (playlistList.length === 0) {
-      alert("No artist is selected!")
+    console.log(playlistList +  "is playlist");
+    if (!playlistList) {
+      alert("No playlist is selected!")
     } else {
-      playlistList.forEach((artist) => props.addArtist(artist));
-      setPlaylistList(initState);
+      props.addArtistsFromPlaylist(playlistList);
     }
   }
 
@@ -57,6 +57,7 @@ function PlaylistManager(props){
     }).then(response => {
         console.log(response.data)
         callback(response.data)
+        // setPlaylistList(response.data);
     }).catch(err => {
         console.log("Oh no! 2+3 combo!!\n" + err);
     })
