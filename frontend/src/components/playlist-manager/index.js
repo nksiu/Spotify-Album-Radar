@@ -36,11 +36,10 @@ function PlaylistManager(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (playlistList.length === 0) {
-      alert("No artist is selected!")
+    if (!playlistList) {
+      alert("No playlist is selected!")
     } else {
-      playlistList.forEach((artist) => props.addArtist(artist));
-      setPlaylistList(initState);
+      props.addArtistsFromPlaylist(playlistList);
     }
   }
 

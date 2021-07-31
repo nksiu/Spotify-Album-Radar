@@ -13,11 +13,11 @@ app.use(express.static("public"));
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
   "mongodb+srv://" +
-  process.env.DB_USER +
-  ":" +
-  process.env.DB_PASS +
-  "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true }
+    process.env.DB_USER +
+    ":" +
+    process.env.DB_PASS +
+    "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }
 );
 
 const db = mongoose.connection;
@@ -34,6 +34,7 @@ const redirect_uri =
 app.use("/api/albums", require("./routes/api/albums"));
 app.use("/api/artists", require("./routes/api/artists"));
 app.use("/api/me", require("./routes/api/me"));
+app.use("/api/playlist", require("./routes/api/playlist"));
 
 app.get("/login", (req, res) => {
   var scopes = "user-read-private user-read-email playlist-read-private playlist-read-collaborative";

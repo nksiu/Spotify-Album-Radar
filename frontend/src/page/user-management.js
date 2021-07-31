@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
@@ -10,7 +10,7 @@ import ArtistManager from '../components/artist-manager';
 import PlaylistManager from '../components/playlist-manager'
 
 // Actions
-import { addNewArtist, deleteArtist } from '../actions/userActions';
+import { addNewArtist, deleteArtist, addArtistsFromPlaylist } from '../actions/userActions';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -22,14 +22,18 @@ const Wrapper = styled.div`
   padding-bottom: 75px;
 `
 
-const UserManagement = ({ user, addNewArtist, deleteArtist }) => {
+const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlaylist }) => {
     const { accessToken, userId, artists } = user
     const [artistList, updateArtistList] = useState(artists);
+
+    useEffect(()=> {
+        updateArtistList(artists);
+    }, [artists]);
 
     if (!accessToken) {
         return <Redirect to="/" ></Redirect>;
     }
-
+    
     //TODO: Add in error dialogue for duplicate entry
     const addArtist = (artist) => {
         const newObj = { userId, artistName: artist.label, id: artist.value };
@@ -42,17 +46,21 @@ const UserManagement = ({ user, addNewArtist, deleteArtist }) => {
             updateArtistList([...artistList, newObj]);
         }
     }
-
     const unSubscribeArtist = (i) => {
         const newObj = {userId, ...artistList[i]}
         deleteArtist(newObj)
         artistList.splice(i, 1);
         updateArtistList([...artistList]);
     }
+
+    const addFromPlaylist = (playlist) => {
+        const newObj = { userId, id: playlist.value };
+        addArtistsFromPlaylist(accessToken, newObj);
+    }
     return (
         <Wrapper>
             <ResponsiveTitle>Profile Management</ResponsiveTitle>
-            <PlaylistManager addArtist={addArtist} token={accessToken}/>
+            <PlaylistManager addArtistsFromPlaylist={addFromPlaylist} token={accessToken}/>
             <ArtistManager addArtist={addArtist} />
             <ArtistList artists={artistList} deleteArtist={unSubscribeArtist}></ArtistList>
         </Wrapper>
@@ -63,4 +71,4 @@ const mapStateToProps = state => ({
     user: state.user
   })
 
-export default connect(mapStateToProps, {addNewArtist, deleteArtist})(UserManagement);
+export default connect(mapStateToProps, {addNewArtist, deleteArtist,addArtistsFromPlaylist})(UserManagement);

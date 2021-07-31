@@ -1,10 +1,14 @@
 import { Fragment, useEffect, useState } from 'react';
+import { connect } from 'react-redux'
 import styled from 'styled-components';
 
 //Components
 import Artist from '../artist';
 import SearchBar from '../searchbar';
 import { CenteredSubTitle } from '../title';
+
+// Actions
+import { getArtists } from '../../actions/userActions';
 
 const ArtistTable = styled.table`
     align-self: center;
@@ -24,6 +28,7 @@ function ArtistList(props) {
     useEffect(() => {
         updateArtistList(props.artists)
     }, [props.artists]);
+
 
     const onChange = (e) => {
         updateForm(e.target.value);
@@ -52,4 +57,8 @@ function ArtistList(props) {
     );
 }
 
-export default ArtistList;
+const mapStateToProps = state => ({
+    user: state.user
+})
+
+export default connect(mapStateToProps, {getArtists})(ArtistList);

@@ -2,6 +2,7 @@ import {
   LOGIN,
   LOGOUT,
   GET_ARTISTS,
+  ADD_ARTIST_FROM_PLAYLIST,
   ADD_ARTIST,
   DELETE_ARTIST
 } from '../actions/types'
@@ -25,6 +26,7 @@ const userReducer = function(state = initialState, action) {
         artists: []
       }
     case GET_ARTISTS:
+    case ADD_ARTIST_FROM_PLAYLIST:
       return {
         ...state,
         artists: action.payload
