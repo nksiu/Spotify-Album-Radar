@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
         res.json({ id: user[0].userID, name: user[0].user, artists: user[0].artists });
       }
     });
-  }).catch((e)=> {
+  }).catch((e) => {
     console.log("Error while grab user data, redirecting to home");
   });
 

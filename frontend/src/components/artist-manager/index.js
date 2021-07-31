@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;`
 
-function ArtistManager(props){
+function ArtistManager(props) {
   const initState = "";
   const [artistList, setArtistList] = useState(initState);
 
@@ -40,25 +40,23 @@ function ArtistManager(props){
       alert("No artist is selected!")
     } else {
       artistList.forEach((artist) => props.addArtist(artist));
-    setArtistList(initState);
+      setArtistList(initState);
     }
   }
 
   const loadOptions = (inputValue, callback) => {
     setTimeout(() => {
-    const baseURL = "http://localhost:5000/"
       axios({
         url: '/api/artists',
-        baseURL: baseURL,
         Accept: 'application/json',
         params: {
-            "q": inputValue
+          "q": inputValue
         }
-    }).then(response => {
+      }).then(response => {
         callback(response.data)
-    }).catch(err => {
+      }).catch(err => {
         console.log("Oh no! 2+3 combo!!\n" + err);
-    })
+      })
     }, 1000);
   };
 
@@ -70,18 +68,18 @@ function ArtistManager(props){
   return (
     <Wrapper>
       <CenteredSubTitle>Add an Artist</CenteredSubTitle>
-          <SearchBarContainer>
-            <AsyncSelect 
-              isMulti
-              loadOptions={loadOptions}
-              onInputChange={handleInputChange}
-              onChange={setArtistList}
-              value={artistList}
-              />
-            <ArtistForm onSubmit={handleSubmit}>
-              <Button className="button" type="submit" value="Add Artist"></Button>
-            </ArtistForm>
-          </SearchBarContainer>
+      <SearchBarContainer>
+        <AsyncSelect
+          isMulti
+          loadOptions={loadOptions}
+          onInputChange={handleInputChange}
+          onChange={setArtistList}
+          value={artistList}
+        />
+        <ArtistForm onSubmit={handleSubmit}>
+          <Button className="button" type="submit" value="Add Artist"></Button>
+        </ArtistForm>
+      </SearchBarContainer>
     </Wrapper>
   )
 }
