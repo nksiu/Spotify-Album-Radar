@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   if (!req.query.access_token) {
-    res.redirect(process.env.FRONTEND_URL + "/login");
+    res.redirect("http://spotifyreleaseradar.herokuapp.com/login");
   }
   axios.get("https://api.spotify.com/v1/me", {
     headers: { Authorization: "Bearer " + req.query.access_token },
