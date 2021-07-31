@@ -87,8 +87,8 @@ const Splash = () => {
       <ContentDiv>
         <Title>Spotify Album Radar</Title>
         <SubTitle>Discover New Releases From All Your Favourite Artists</SubTitle>
-        <Login onClick={() => window.location = 'http://localhost:5000/login'}>
-            CONNECT TO SPOTIFY
+        <Login onClick={() => window.location = 'http://spotifyreleaseradar.herokuapp.com/login'} >
+          CONNECT TO SPOTIFY
         </Login>
       </ContentDiv>
     </MainDiv>

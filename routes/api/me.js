@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   if (!req.query.access_token) {
-    res.redirect("http://localhost:5000/login");
+    res.redirect("http://spotifyreleaseradar.herokuapp.com/login");
   }
   axios.get("https://api.spotify.com/v1/me", {
     headers: { Authorization: "Bearer " + req.query.access_token },
@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
         res.json({ id: user[0].userID, name: user[0].user, artists: user[0].artists });
       }
     });
-  }).catch((e)=> {
+  }).catch((e) => {
     console.log("Error while grab user data, redirecting to home");
   });
 

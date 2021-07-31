@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;`
 
-function PlaylistManager(props){
+function PlaylistManager(props) {
   const initState = [];
   const [playlistList, setPlaylistList] = useState(initState);
 
@@ -45,21 +45,18 @@ function PlaylistManager(props){
 
   const loadOptions = (inputValue, callback) => {
     setTimeout(() => {
-    const baseURL = "http://localhost:5000/"
       axios({
         url: '/api/artists/playlists',
-        baseURL: baseURL,
         Accept: 'application/json',
         params: {
-            "token": props.token
+          "token": props.token
         }
-    }).then(response => {
+      }).then(response => {
         console.log(response.data)
         callback(response.data)
-        // setPlaylistList(response.data);
-    }).catch(err => {
+      }).catch(err => {
         console.log("Oh no! 2+3 combo!!\n" + err);
-    })
+      })
     }, 1000);
   };
 
@@ -67,18 +64,18 @@ function PlaylistManager(props){
   return (
     <Wrapper>
       <CenteredSubTitle>Add Artists from Playlist</CenteredSubTitle>
-          <SearchBarContainer>
-            <AsyncSelect 
-              loadOptions={loadOptions}
-              defaultOptions={true}
-              isSearchable={false}
-              onChange={setPlaylistList}
-              value={playlistList}
-              />
-            <PlaylistForm onSubmit={handleSubmit}>
-              <Button className="button" type="submit" value="Add from Playlists"></Button>
-            </PlaylistForm>
-          </SearchBarContainer>
+      <SearchBarContainer>
+        <AsyncSelect
+          loadOptions={loadOptions}
+          defaultOptions={true}
+          isSearchable={false}
+          onChange={setPlaylistList}
+          value={playlistList}
+        />
+        <PlaylistForm onSubmit={handleSubmit}>
+          <Button className="button" type="submit" value="Add from Playlists"></Button>
+        </PlaylistForm>
+      </SearchBarContainer>
     </Wrapper>
   )
 }
