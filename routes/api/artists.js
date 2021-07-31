@@ -110,7 +110,9 @@ router.get('/playlists', async function(req, res) {
 })
 
 router.get('/test', (req, res) => {
-  playlistHelper.pullLatestReleases();
+  playlistHelper.pullLatestReleases().then((trackedArtists)=> {
+    res.json(trackedArtists)
+  });
 })
 
 module.exports = router;

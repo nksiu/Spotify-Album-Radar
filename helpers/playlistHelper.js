@@ -95,6 +95,10 @@ const pullLatestReleases = () => {
     }).catch(()=> {
         console.log("Failed to retrieve spotify token");
     });
+
+    return TrackedArtists.find({}).then((artists) => {
+        return artists;
+    });
 }
 
 module.exports = {updateTrackedArtists, pullLatestReleases};
