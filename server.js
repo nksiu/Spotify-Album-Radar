@@ -73,7 +73,7 @@ app.get("/callback", (req, res) => {
     const access_token = body.access_token;
     const url = process.env.FRONTEND_URL || "http://localhost:3000";
     res.cookie("access_token", access_token, {
-      domain: "localhost",
+      domain: process.env.FRONTEND_URL,
       maxAge: 360000,
       httpOnly: false,
     });
