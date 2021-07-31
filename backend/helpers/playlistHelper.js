@@ -13,20 +13,11 @@ async function getSpotifyToken() {
         },
         data: 'grant_type=client_credentials',
         })
-        // .then(res => {
-        //   server_token = res.data.access_token;
-        //   console.log(server_token)
-        //   return server_token;
-        // }).catch(() => {
-        //     console.log('poggers');
-        // })
-        console.log(res.data.access_token);
     return res.data.access_token;
 }
 
-async function queryLatestRelease (id, spotifyToken) {
-    console.log(spotifyToken);
-    return await axios.get(
+function queryLatestRelease (id, spotifyToken) {
+    return axios.get(
         `https://api.spotify.com/v1/artists/${id}/albums`,
         {
           params: {
@@ -41,8 +32,8 @@ async function queryLatestRelease (id, spotifyToken) {
     ).then((albums)=> {
         let currDate = new Date();
         let filterDate = new Date();
-        filterDate.setDate(currDate.getDate() - 7);
-        let filteredAlbums = albums.items.filter((album) => {
+        filterDate.setDate(currDate.getDate() - 30);
+        let filteredAlbums = albums.data.items.filter((album) => {
             let albumReleaseDate = new Date(album.release_date);
             return albumReleaseDate > filterDate && albumReleaseDate < currDate;
         })
@@ -55,45 +46,55 @@ async function queryLatestRelease (id, spotifyToken) {
                 url: album.external_urls.spotify,
             };
         });
-
         return cleanAlbums;
-    }).catch(e => {
-        console.log(e);
+    }).catch(() => {
+        console.log("error retrieve new releases");
+        return [];
     });
 }
 
 function updateTrackedArtists(artistList) {
-    console.log('hello');
-    TrackedArtists.find({}, 'id').then((subscribed) => {
+    TrackedArtists.find({}, 'artistId').then((subscribed) => {
+        const artistIds = subscribed.map((entry)=> {
+            // Simply map mongo entries to id strings
+            return entry.artistId;
+        })
         artistList.forEach((artist) => {
-            if (!subscribed.includes(artist.id)) {
-                const token = await getSpotifyToken();
-                queryLatestRelease(artist.id, token).then((artistReleases)=> {
-                    let newTrackedArtist = new TrackedArtists({
-                        artistId: artist.id,
-                        releases: artistReleases,
-                    });
-                    newTrackedArtist.save();
+            if (!artistIds.includes(artist.id)) {
+                getSpotifyToken().then((token)=> {
+                    queryLatestRelease(artist.id, token)
+                    .then((artistReleases)=> {
+                        let newTrackedArtist = new TrackedArtists({
+                            artistId: artist.id,
+                            releases: artistReleases,
+                        });
+                        newTrackedArtist.save();
+                    })
                 })
             }
         })
     }).catch(()=> {
-        console.log('bad');
+        console.log('failed to fetch from db');
     });
 }
 
 const pullLatestReleases = () => {
-    const spotifyToken = getSpotifyToken();
-    TrackedArtists.find({}, 'id').then((artists) => {
-        artists.forEach((artist) => {
-            queryLatestRelease(artist.id, spotifyToken).then((artistReleases)=> {
-                // update Entry under tracked Artist
-                TrackedArtists.findOneAndUpdate({artistId: id}, {releases: artistReleases}, {
-                    returnOriginal: false
-                })
-            });
+    getSpotifyToken().then((spotifyToken)=> {
+        TrackedArtists.find({}, 'artistId').then((artists) => {
+            artists.forEach((artist) => {
+                queryLatestRelease(artist.artistId, spotifyToken).then((artistReleases)=> {
+                    // update Entry under tracked Artist
+                    TrackedArtists.findOneAndUpdate({artistId: artist.artistId}, {releases: artistReleases}, {
+                        returnOriginal: false
+                    });
+                });
+            })
+        }).catch(() => {
+            console.log('failed to fetch from db');
         })
-    })
+    }).catch(()=> {
+        console.log("Failed to retrieve spotify token");
+    });
 }
 
 module.exports = {updateTrackedArtists, pullLatestReleases};

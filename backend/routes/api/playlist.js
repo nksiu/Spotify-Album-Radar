@@ -41,7 +41,7 @@ router.put('/add', express.json(), async function(req,res) {
         };
     })
 
-    playlistHelper.updatedArtistList(artists);
+    playlistHelper.updateTrackedArtists(artists);
     
     User.findOne({userID: profileID}, 'artists').then((userSubscribedArtists) => {
 

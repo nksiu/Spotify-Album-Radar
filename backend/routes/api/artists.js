@@ -109,7 +109,8 @@ router.get('/playlists', async function(req, res) {
   res.json(ret);
 })
 
-router.get('/testdebug', (req, res) => {
+router.get('/test', (req, res) => {
+  playlistHelper.pullLatestReleases();
 })
 
 module.exports = router;

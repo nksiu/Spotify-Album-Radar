@@ -15,7 +15,7 @@ mongoose.connect(
     ":" +
     process.env.DB_PASS +
     "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }
 );
 
 const db = mongoose.connection;
