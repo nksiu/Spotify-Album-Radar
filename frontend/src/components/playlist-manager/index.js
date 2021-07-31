@@ -36,7 +36,6 @@ function PlaylistManager(props){
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(playlistList +  "is playlist");
     if (!playlistList) {
       alert("No playlist is selected!")
     } else {

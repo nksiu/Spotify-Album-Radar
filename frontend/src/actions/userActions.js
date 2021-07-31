@@ -87,7 +87,6 @@ export const addArtistsFromPlaylist = (token, playlist) => (dispatch, getState) 
   axios({        
     method: 'put',
     url: '/api/playlist/add',
-    baseURL: 'http://localhost:5000',
     data: payload,
   }).then((res) => {
     dispatch({
