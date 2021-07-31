@@ -1,7 +1,7 @@
 # Spotify-Album-Radar
 
 ***Project Description:***
-Spotify Album Radar is for anyone who loves listening to music and keeping up to date of their favourite artists’ latest songs. Users will be able to connect their Spotify account to our website and follow their favourite artists for new releases. By favouriting artists, Spotify album radar will list all the newest releases in the last week.
+Spotify Album Radar is for anyone who loves listening to music and keeping up to date with their favourite artists’ latest songs. Users will be able to connect their Spotify account to our website and follow their favourite artists for new releases. By subscribing to artists, Spotify Album Radar will show all the newest releases in the past week.
 
 # To start cd into backend then run one of the following commands:
 - To start both the backend and frontend: npm run dev
