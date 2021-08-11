@@ -2,6 +2,7 @@ const express = require('express')
 const querystring = require('querystring')
 const axios = require('axios');
 const User = require('../../models/user')
+const playlistHelper = require('../../helpers/playlistHelper');
 require('dotenv').config()
 
 const router = express.Router()
@@ -70,6 +71,7 @@ router.put('/add', (req, res) => {
     artistName: newArtist.artistName,
     id: newArtist.id
   }
+  playlistHelper.updateTrackedArtists([myArtist]);
   User.findOneAndUpdate(
     { userID: newArtist.userId },
     { $push: {artists: myArtist} }
@@ -86,6 +88,31 @@ router.delete('/delete', (req, res) => {
     {userID: newArtist.userId},
     { $pull: {artists: myArtist}} 
     ).then(data => res.json({success: true}))
+})
+
+router.get('/playlists', async function(req, res) {
+  const playlistList = await axios({
+    url: 'https://api.spotify.com/v1/me/playlists',
+    headers: {
+      'Authorization': "Bearer " + req.query.token
+    },
+    params: {
+      "limit": 30
+    }
+  }).then(response => {
+    return response.data.items;
+  })
+
+  let ret = playlistList.map(playlist => {
+    return {"label": playlist.name, "value": playlist.id}
+  })
+  res.json(ret);
+})
+
+router.get('/test', (req, res) => {
+  playlistHelper.pullLatestReleases().then((trackedArtists)=> {
+    res.json(trackedArtists)
+  });
 })
 
 module.exports = router;

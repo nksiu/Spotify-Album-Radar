@@ -5,7 +5,7 @@ import { CenteredSubTitle } from '../title';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 
-const ArtistForm = styled.form`
+const PlaylistForm = styled.form`
   margin-top: 1vh;
   align-content: center;
   display: flex;
@@ -14,7 +14,7 @@ const ArtistForm = styled.form`
 const Button = styled.input`
   margin: 0 auto;
   padding: 0.5vh;
-  width: 20%;
+  width: 30%;
   font: ${fontStyles.default};
 `
 const SearchBarContainer = styled.div`
@@ -30,29 +30,29 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;`
 
-function ArtistManager(props) {
-  const initState = "";
-  const [artistList, setArtistList] = useState(initState);
+function PlaylistManager(props) {
+  const initState = [];
+  const [playlistList, setPlaylistList] = useState(initState);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (artistList.length === 0) {
-      alert("No artist is selected!")
+    if (!playlistList) {
+      alert("No playlist is selected!")
     } else {
-      artistList.forEach((artist) => props.addArtist(artist));
-      setArtistList(initState);
+      props.addArtistsFromPlaylist(playlistList);
     }
   }
 
   const loadOptions = (inputValue, callback) => {
     setTimeout(() => {
       axios({
-        url: '/api/artists',
+        url: '/api/artists/playlists',
         Accept: 'application/json',
         params: {
-          "q": inputValue
+          "token": props.token
         }
       }).then(response => {
+        console.log(response.data)
         callback(response.data)
       }).catch(err => {
         console.log("Oh no! 2+3 combo!!\n" + err);
@@ -60,28 +60,24 @@ function ArtistManager(props) {
     }, 1000);
   };
 
-  const handleInputChange = (newValue) => {
-    const inputValue = newValue.replace(/\W/g, '');
-    return inputValue;
-  };
 
   return (
     <Wrapper>
-      <CenteredSubTitle>Add an Artist</CenteredSubTitle>
+      <CenteredSubTitle>Add Artists from Playlist</CenteredSubTitle>
       <SearchBarContainer>
         <AsyncSelect
-          isMulti
           loadOptions={loadOptions}
-          onInputChange={handleInputChange}
-          onChange={setArtistList}
-          value={artistList}
+          defaultOptions={true}
+          isSearchable={false}
+          onChange={setPlaylistList}
+          value={playlistList}
         />
-        <ArtistForm onSubmit={handleSubmit}>
-          <Button className="button" type="submit" value="Add Artist"></Button>
-        </ArtistForm>
+        <PlaylistForm onSubmit={handleSubmit}>
+          <Button className="button" type="submit" value="Add from Playlists"></Button>
+        </PlaylistForm>
       </SearchBarContainer>
     </Wrapper>
   )
 }
 
-export default ArtistManager;
+export default PlaylistManager;

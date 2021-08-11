@@ -8,6 +8,8 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
+app.use(express.static("public"));
+
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
   "mongodb+srv://" +
@@ -15,7 +17,7 @@ mongoose.connect(
     ":" +
     process.env.DB_PASS +
     "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }
 );
 
 const db = mongoose.connection;
@@ -32,17 +34,18 @@ const redirect_uri =
 app.use("/api/albums", require("./routes/api/albums"));
 app.use("/api/artists", require("./routes/api/artists"));
 app.use("/api/me", require("./routes/api/me"));
+app.use("/api/playlist", require("./routes/api/playlist"));
 
 app.get("/login", (req, res) => {
-  var scopes = "user-read-private user-read-email";
+  var scopes = "user-read-private user-read-email playlist-read-private playlist-read-collaborative";
   res.redirect(
     "https://accounts.spotify.com/authorize" +
-      "?response_type=code" +
-      "&client_id=" +
-      process.env.SPOTIFY_CLIENT_ID +
-      (scopes ? "&scope=" + encodeURIComponent(scopes) : "") +
-      "&redirect_uri=" +
-      encodeURIComponent(redirect_uri)
+    "?response_type=code" +
+    "&client_id=" +
+    process.env.SPOTIFY_CLIENT_ID +
+    (scopes ? "&scope=" + encodeURIComponent(scopes) : "") +
+    "&redirect_uri=" +
+    encodeURIComponent(redirect_uri)
   );
 });
 
@@ -60,8 +63,8 @@ app.get("/callback", (req, res) => {
         "Basic " +
         new Buffer.from(
           process.env.SPOTIFY_CLIENT_ID +
-            ":" +
-            process.env.SPOTIFY_CLIENT_SECRET
+          ":" +
+          process.env.SPOTIFY_CLIENT_SECRET
         ).toString("base64"),
     },
     json: true,
@@ -71,7 +74,7 @@ app.get("/callback", (req, res) => {
     const access_token = body.access_token;
     const url = process.env.FRONTEND_URL || "http://localhost:3000";
     res.cookie("access_token", access_token, {
-      domain: "localhost",
+      domain: 'spotifyreleaseradar.herokuapp.com',
       maxAge: 360000,
       httpOnly: false,
     });
