@@ -82,12 +82,13 @@ const SubTitle = styled.h2`
   }
 `
 const Splash = () => {
+  const url = process.env.NODE_ENV === 'production' ? 'http://spotifyreleaseradar.herokuapp.com/login' : 'http://localhost:5000/login'
   return (
     <MainDiv>
       <ContentDiv>
         <Title>Spotify Album Radar</Title>
         <SubTitle>Discover New Releases From All Your Favourite Artists</SubTitle>
-        <Login onClick={() => window.location = 'http://spotifyreleaseradar.herokuapp.com/login'} >
+        <Login onClick={() => window.location = url} >
           CONNECT TO SPOTIFY
         </Login>
       </ContentDiv>
