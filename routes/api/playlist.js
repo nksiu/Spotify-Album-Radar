@@ -81,7 +81,7 @@ router.put('/toggle', express.json(), async function(req,res) {
 
   if (toggleState !== userState) {
     if (userState == true && !userPlaylistID){
-      const createdPlaylistInfo = await axios({
+      axios({
         method: 'post',
         url: `https://api.spotify.com/v1/users/${req.body.userID}/playlists`,
         headers: {
