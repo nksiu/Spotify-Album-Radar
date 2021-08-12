@@ -11,7 +11,7 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
   - [x] User authentication for spotify should work to link user account
   - [x] User should be able to see a per-user home/profile page
   - [x] User should to able to manually add artists to track
-- DB should be able to save user’s tracked artists
+- [x] DB should be able to save user’s tracked artists
   - [x] Link DB to Users
   - [x] Add entry to DB when user adds new artist
 - [x] The release retrieval job should be functional
@@ -30,10 +30,10 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 
 #### Stretch (2-3):
 
-- [] Have the job update a user specified playlists with the filtered “most recent” songs.
+- [ ] Have the job update a user specified playlists with the filtered “most recent” songs.
 - [x] User should have playlist updates based off subscribed artists
-- [] Release retrieval job can be scheduled to run once a week
-- [] Have the job send an email summary of weekly updates
+- [ ] Release retrieval job can be scheduled to run once a week
+- [ ] Have the job send an email summary of weekly updates
 
 ## Description of Technology used:
 
