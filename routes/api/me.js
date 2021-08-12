@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
           user: data.data.display_name,
           userID: userId,
           artists: [],
-          numDays: 200,
+          numDays: 365,
         });
         newUser
           .save()
@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
             res.json({ id: data.data.id, name: data.data.display_name, artists: [] })
           );
       } else {
-        res.json({ id: user[0].userID, name: user[0].user, artists: user[0].artists });
+        res.json({ id: user[0].userID, name: user[0].user, artists: user[0].artists, modifyPlaylist: user[0].modifyPlaylist, playlistID: user[0].playlistID });
       }
     });
   }).catch((e) => {

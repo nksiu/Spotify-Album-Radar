@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+import Toggle from 'react-toggle'
 
 // Components
 import { ResponsiveTitle } from '../components/title';
 import ArtistList from '../components/artist-list';
 import ArtistManager from '../components/artist-manager';
 import PlaylistManager from '../components/playlist-manager'
+import ToggleWrapper from '../components/toggle/toggle-wrapper'
 
 // Actions
 import { addNewArtist, deleteArtist, addArtistsFromPlaylist } from '../actions/userActions';
@@ -23,8 +25,9 @@ const Wrapper = styled.div`
 `
 
 const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlaylist }) => {
-    const { accessToken, userId, artists } = user
+    const { accessToken, userId, artists, modifyPlaylist } = user
     const [artistList, updateArtistList] = useState(artists);
+    const [toggle, updateToggle] = useState(modifyPlaylist)
 
     useEffect(()=> {
         updateArtistList(artists);
@@ -57,9 +60,22 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
         const newObj = { userId, id: playlist.value };
         addArtistsFromPlaylist(accessToken, newObj);
     }
+
+    const handleToggleChange = () => {
+        updateToggle(!toggle)
+    }
+
     return (
         <Wrapper>
             <ResponsiveTitle>Profile Management</ResponsiveTitle>
+            <ToggleWrapper>
+                <Toggle
+                    id='modify-status'
+                    defaultChecked={toggle}
+                    onChange={handleToggleChange} 
+                />
+                <p>Allow Modification of your playlist for subscribed artists</p>
+            </ToggleWrapper>
             <PlaylistManager addArtistsFromPlaylist={addFromPlaylist} token={accessToken}/>
             <ArtistManager addArtist={addArtist} />
             <ArtistList artists={artistList} deleteArtist={unSubscribeArtist}></ArtistList>

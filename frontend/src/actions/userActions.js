@@ -19,12 +19,15 @@ export const login = (token) => (dispatch, getState) => {
       }
     }
   ).then((res) => {
+    console.log(res.data)
     dispatch({
       type: LOGIN,
       payload: {
         userId: res.data.id,
         accessToken: token,
-        artists: res.data.artists
+        artists: res.data.artists,
+        modifyPlaylist: res.data.modifyPlaylist,
+        playlistId: res.data.playlistID
       }
     })
   })
