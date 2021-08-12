@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components'
+import styled from 'styled-components';
 import splash from '../../images/splash.jpg';
 import { fontStyles, colors } from "../../styles";
 
@@ -82,7 +82,7 @@ const SubTitle = styled.h2`
   }
 `
 const Splash = () => {
-  const url = process.env.NODE_ENV === 'production' ? 'http://spotifyreleaseradar.herokuapp.com/login' : 'http://localhost:5000/login'
+  const url = process.env.NODE_ENV === 'production' ? 'http://spotifyreleaseradar.herokuapp.com/login' : 'http://localhost:5000/login';
   return (
     <MainDiv>
       <ContentDiv>

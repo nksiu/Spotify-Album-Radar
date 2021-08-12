@@ -15,8 +15,8 @@ const initialState = {
   playlistId: ''
 }
 
-const userReducer = function(state = initialState, action) {
-  switch(action.type) {
+const userReducer = function (state = initialState, action) {
+  switch (action.type) {
     case LOGIN:
       return {
         ...action.payload

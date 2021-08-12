@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 //Components
@@ -26,7 +26,7 @@ function ArtistList(props) {
     const [formInput, updateForm] = useState("");
 
     useEffect(() => {
-        updateArtistList(props.artists)
+        updateArtistList(props.artists);
     }, [props.artists]);
 
 
@@ -36,7 +36,7 @@ function ArtistList(props) {
     }
 
     useEffect(() => {
-        const filteredArtists = props.artists.filter((artist)=> {
+        const filteredArtists = props.artists.filter((artist) => {
             return artist.artistName.toLowerCase().includes(formInput.toLowerCase());
         });
         updateArtistList(filteredArtists);
@@ -45,12 +45,12 @@ function ArtistList(props) {
     return (
         <Fragment>
             <CenteredSubTitle>Subscribed Artists</CenteredSubTitle>
-            <SearchBar onChange={onChange}/>
+            <SearchBar onChange={onChange} />
             <ArtistTable>
                 <ArtistTableBody>
-                {artistList.map((artist, i) => 
-                <Artist key = {artist.artistName} artistName={artist.artistName} index={i} deleteArtist={props.deleteArtist} />
-                )}
+                    {artistList.map((artist, i) =>
+                        <Artist key={artist.artistName} artistName={artist.artistName} index={i} deleteArtist={props.deleteArtist} />
+                    )}
                 </ArtistTableBody>
             </ArtistTable>
         </Fragment>
@@ -61,4 +61,4 @@ const mapStateToProps = state => ({
     user: state.user
 })
 
-export default connect(mapStateToProps, {getArtists})(ArtistList);
+export default connect(mapStateToProps, { getArtists })(ArtistList);

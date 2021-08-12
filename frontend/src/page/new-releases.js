@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 import axios from 'axios';
 
 // Components
-import { Title } from '../components/title'
-import SongList from '../components/song-list'
+import { Title } from '../components/title';
+import SongList from '../components/song-list';
 import { colors, fontStyles } from '../styles';
 
 // Actions
@@ -73,7 +73,7 @@ const NewReleases = ({ token, user }) => {
 
     let newDays = parseInt(formData);
     if (isNaN(newDays)) {
-      alert('Please enter a number!')
+      alert('Please enter a number!');
     } else {
       axios({
         method: 'put',

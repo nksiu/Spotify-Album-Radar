@@ -1,13 +1,13 @@
 import React from "react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import styled from "styled-components";
 import { fontStyles, colors } from "../../styles";
 import { NavLink as Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 // Actions
-import { logout } from '../../actions/userActions'
+import { logout } from '../../actions/userActions';
 
 const Nav = styled.nav`
   background: #000;
@@ -110,11 +110,11 @@ const LogOutButton = styled(Link)`
 `;
 
 const NavBar = ({ user, logout }) => {
-  const { accessToken } = user
+  const { accessToken } = user;
   const logOut = () => {
-    Cookies.remove('access_token')
+    Cookies.remove('access_token');
     window.localStorage.setItem('access_token', '');
-    logout()
+    logout();
   }
 
   return (
@@ -131,8 +131,8 @@ const NavBar = ({ user, logout }) => {
         {
           accessToken ?
             <LogOutButton to="/" onClick={logOut}>Log Out</LogOutButton>
-          :
-          null
+            :
+            null
         }
       </NavMenu>
     </Nav>
@@ -143,4 +143,4 @@ const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps, {logout})(NavBar);
+export default connect(mapStateToProps, { logout })(NavBar);

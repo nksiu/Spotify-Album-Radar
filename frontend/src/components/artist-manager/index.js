@@ -37,7 +37,7 @@ function ArtistManager(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (artistList.length === 0) {
-      alert("No artist is selected!")
+      alert("No artist is selected!");
     } else {
       artistList.forEach((artist) => props.addArtist(artist));
       setArtistList(initState);
@@ -53,9 +53,9 @@ function ArtistManager(props) {
           "q": inputValue
         }
       }).then(response => {
-        callback(response.data)
+        callback(response.data);
       }).catch(err => {
-        console.log("Oh no! 2+3 combo!!\n" + err);
+        console.log("Artist Fetch Failed!\n" + err);
       })
     }, 1000);
   };
