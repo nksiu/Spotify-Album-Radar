@@ -94,7 +94,6 @@ router.put('/toggle', express.json(), async function(req,res) {
             "description": "Your weekly releases, tracked and created from Spotify Release Tracker"
         }
         }).then(response => {
-          console.log(response)
           let addedPlaylistID = response.data.id;
           User.findOneAndUpdate({userID: requestUserID}, {
             modifyPlaylist: true,
@@ -102,6 +101,10 @@ router.put('/toggle', express.json(), async function(req,res) {
           }).then(rtn => {
             res.json(addedPlaylistID);
           })
+      }).catch(e => {
+        console.error(e);
+        res.status(500);
+        res.json(e);
       })
     } else if (!toggleState){
         User.findOneAndUpdate({userID: requestUserID}, {

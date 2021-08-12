@@ -72,10 +72,9 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
                 toggleState: !toggle
             }
         }).then(res => {
-            console.log(res.body);
             updateToggle(!toggle);
         }).catch(e => {
-            console.log("Error! Details: " + e);
+            console.error("Error! Details: " + e);
         })
     }
 
