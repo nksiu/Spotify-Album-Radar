@@ -90,7 +90,9 @@ router.put('/toggle', express.json(), async function (req, res) {
         },
         data: {
           "name": "Weekly releases from Spotify Release Tracker",
-          "description": "Your weekly releases, tracked and created from Spotify Release Tracker"
+          "description": "Your weekly releases, tracked and created from Spotify Release Tracker",
+          "public": false,
+          "collaborative": true
         }
       }).then(response => {
         let addedPlaylistID = response.data.id;
