@@ -6,7 +6,7 @@ let user = new mongoose.Schema({
   artists: [],
   numDays: Number,
   modifyPlaylist: Boolean,
-  playlistID: String
+  playlistID: String,
 });
 
 let userData = mongoose.model("userData", user);

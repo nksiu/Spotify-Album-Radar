@@ -21,6 +21,8 @@ router.get("/", async (req, res) => {
           userID: userId,
           artists: [],
           numDays: 365,
+          modifyPlaylist: false,
+          playlistID: "",
         });
         newUser
           .save()
@@ -34,8 +36,6 @@ router.get("/", async (req, res) => {
   }).catch((e) => {
     console.log("Error while grab user data, redirecting to home");
   });
-
-  // Todo save: email: data.email, imgUrl: data.images.url
 });
 
 module.exports = router;

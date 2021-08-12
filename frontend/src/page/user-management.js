@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import Toggle from 'react-toggle'
+import Toggle from 'react-toggle';
+import axios from 'axios';
 
 // Components
 import { ResponsiveTitle } from '../components/title';
 import ArtistList from '../components/artist-list';
 import ArtistManager from '../components/artist-manager';
-import PlaylistManager from '../components/playlist-manager'
-import ToggleWrapper from '../components/toggle/toggle-wrapper'
+import PlaylistManager from '../components/playlist-manager';
+import ToggleWrapper from '../components/toggle/toggle-wrapper';
 
 // Actions
 import { addNewArtist, deleteArtist, addArtistsFromPlaylist } from '../actions/userActions';
@@ -41,17 +42,17 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
     const addArtist = (artist) => {
         const newObj = { userId, artistName: artist.label, id: artist.value };
         if (artistList.filter(savedArtist => {
-            return savedArtist.artistName === artist.label
+            return savedArtist.artistName === artist.label;
         }).length !== 0) {
-            alert("Artist is a duplicate!")
+            alert("Artist is a duplicate!");
         } else {
-            addNewArtist(newObj)
+            addNewArtist(newObj);
             updateArtistList([...artistList, newObj]);
         }
     }
     const unSubscribeArtist = (i) => {
-        const newObj = {userId, ...artistList[i]}
-        deleteArtist(newObj)
+        const newObj = {userId, ...artistList[i]};
+        deleteArtist(newObj);
         artistList.splice(i, 1);
         updateArtistList([...artistList]);
     }
@@ -62,7 +63,19 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
     }
 
     const handleToggleChange = () => {
-        updateToggle(!toggle)
+        axios({
+            method: 'put',
+            url: '/api/playlist/toggle',
+            data: {
+                userID: userId,
+                token: accessToken,
+                toggleState: !toggle
+            }
+        }).then(res => {
+            updateToggle(!toggle);
+        }).catch(e => {
+            console.error("Error! Details: " + e);
+        })
     }
 
     return (

@@ -1,8 +1,8 @@
-const express = require('express')
-const querystring = require('querystring')
+const express = require('express');
+const querystring = require('querystring');
 const axios = require('axios');
-const User = require('../../models/user')
-require('dotenv').config()
+const User = require('../../models/user');
+require('dotenv').config();
 
 const playlistHelper = require('../../helpers/playlistHelper');
 
@@ -69,6 +69,59 @@ router.put('/add', express.json(), async function(req,res) {
       })
       .then(entries => res.json(entries.artists));
     });
+})
+
+router.put('/toggle', express.json(), async function(req,res) {
+
+  let toggleState = req.body.toggleState;
+
+  let requestUserID = req.body.userID;
+
+  let userState = await User.findOne({userID: requestUserID}, 'modifyPlaylist');
+
+  let userPlaylistID = await User.findOne({userID: requestUserID}, 'playlistID');
+
+  if (toggleState !== userState.modifyPlaylist) {
+    if (toggleState && !userPlaylistID.playlistID){
+      axios({
+        method: 'post',
+        url: `https://api.spotify.com/v1/users/${requestUserID}/playlists`,
+        headers: {
+            'Authorization': "Bearer " + req.body.token
+        },
+        data: {
+            "name": "Weekly releases from Spotify Release Tracker",
+            "description": "Your weekly releases, tracked and created from Spotify Release Tracker"
+        }
+        }).then(response => {
+          let addedPlaylistID = response.data.id;
+          User.findOneAndUpdate({userID: requestUserID}, {
+            modifyPlaylist: true,
+            playlistID: addedPlaylistID
+          }).then(rtn => {
+            res.json(addedPlaylistID);
+          })
+      }).catch(e => {
+        console.error(e);
+        res.status(500);
+        res.json(e);
+      })
+    } else if (!toggleState){
+        User.findOneAndUpdate({userID: requestUserID}, {
+          modifyPlaylist: false,
+        }).then(rtn => {
+          res.json("successfully changed to false!");
+        })
+    } else {
+        User.findOneAndUpdate({userID: requestUserID}, {
+          modifyPlaylist: true,
+        }).then(rtn => {
+          res.json("successfully changed to true!");
+        })
+    }
+  } else {
+    res.json("No change was made");
+  }
 })
 
 module.exports = router;
