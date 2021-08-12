@@ -124,13 +124,11 @@ router.put('/toggle', express.json(), async function (req, res) {
 })
 
 router.post('/triggerCron', (req, res) => {
-  const ret = playlistHelper.cronJob();
-  if (ret.success) {
-    res.send("success");
-  } else {
-    res.status(500);
-    res.send(ret.error);
-  }
+  playlistHelper.cronJob().then((ret) => {
+    if (ret.success) {
+      res.send("success");
+    }
+  });
 })
 
 module.exports = router;

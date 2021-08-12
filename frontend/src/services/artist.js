@@ -11,6 +11,6 @@ export function getArtistResults(artist, token) {
     }).then(response => {
         return response.data;
     }).catch(err => {
-        console.log("Oh no! 2+3 combo!!\n" + err);
+        console.log("Artist Fetch Failed\n" + err);
     })
 }

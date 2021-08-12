@@ -102,7 +102,6 @@ app.get("/manualRefresh", (req, res) => {
 
 // Callback endpoint for a manual server token refresh
 app.get("/refreshToken", (req, res) => {
-  console.log(manual_redirect_uri);
   const code = req.query.code || null;
   const authOptions = {
     url: "https://accounts.spotify.com/api/token",

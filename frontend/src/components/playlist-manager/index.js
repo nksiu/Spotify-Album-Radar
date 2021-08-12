@@ -52,10 +52,9 @@ function PlaylistManager(props) {
           "token": props.token
         }
       }).then(response => {
-        console.log(response.data);
         callback(response.data);
       }).catch(err => {
-        console.log("Oh no! 2+3 combo!!\n" + err);
+        console.log("Playlist Fetch failed " + err);
       })
     }, 1000);
   };

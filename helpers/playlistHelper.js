@@ -50,6 +50,7 @@ function queryLatestRelease(id, spotifyToken) {
             params: {
                 limit: 25,
                 include_groups: "album,single",
+                market: "CA"
             },
             headers: {
                 Authorization: "Bearer " + spotifyToken,
@@ -161,7 +162,11 @@ const addTracksToPlaylist = (spotifyToken, tracks, playlistID) => {
     }).then((snapshot) => {
         return snapshot.snapshot_id;
     }).catch((e) => {
-        console.log(e);
+        if (e.response.status == 500) {
+            console.log("Spotify internal error");
+        } else {
+            console.log(e.response);
+        }
     })
 }
 
@@ -199,7 +204,5 @@ const cronJob = () => {
             return { success: false, error: e };
         });
     })
-
-
 }
 module.exports = { updateTrackedArtists, pullLatestReleases, cronJob };

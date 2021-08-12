@@ -55,7 +55,7 @@ function ArtistManager(props) {
       }).then(response => {
         callback(response.data);
       }).catch(err => {
-        console.log("Oh no! 2+3 combo!!\n" + err);
+        console.log("Artist Fetch Failed!\n" + err);
       })
     }, 1000);
   };
