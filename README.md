@@ -83,4 +83,4 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 
 #### Tristan Lei
 
--
+- I created and styled the initial user management page in the front-end, and eventually set the database up later on to save and update a user's changes to their subscribed artists. In the backend, I set up the playlist creation service, and also set up toggle management for when a user would like the app to start/stop actively managing a release playlist. Finally, I created a service in the backend to import artists from a user's playlist as well, and also assisted to create the MongoDB schemas.
