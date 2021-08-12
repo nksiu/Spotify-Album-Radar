@@ -38,7 +38,6 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
         return <Redirect to="/" ></Redirect>;
     }
     
-    //TODO: Add in error dialogue for duplicate entry
     const addArtist = (artist) => {
         const newObj = { userId, artistName: artist.label, id: artist.value };
         if (artistList.filter(savedArtist => {
@@ -87,7 +86,9 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
                     defaultChecked={toggle}
                     onChange={handleToggleChange} 
                 />
-                <p>Allow Modification of your playlist for subscribed artists</p>
+                <p>Allow Modification of your playlist for subscribed artists</p> <br></br>
+                <p>This will create a new playlist in your Spotify Account where new releases will be added!</p>
+                <button> </button>
             </ToggleWrapper>
             <PlaylistManager addArtistsFromPlaylist={addFromPlaylist} token={accessToken}/>
             <ArtistManager addArtist={addArtist} />

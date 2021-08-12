@@ -25,7 +25,6 @@ router.get('/', async function(req,res) {
   const artistName = req.query.q;
   let ret = [];
 
-  //TODO: extract into helper function
   if ((!expiry_time) || (expiry_time < time.getTime()) || !server_token){
     await axios({
       method: 'post',
@@ -107,15 +106,6 @@ router.get('/playlists', async function(req, res) {
     return {"label": playlist.name, "value": playlist.id}
   })
   res.json(ret);
-})
-
-router.get('/test', (req, res) => {
-  // playlistHelper.pullLatestReleases().then((trackedArtists)=> {
-  //   res.json(trackedArtists)
-  // });
-
-  playlistHelper.cronJob();
-  res.json([]);
 })
 
 module.exports = router;

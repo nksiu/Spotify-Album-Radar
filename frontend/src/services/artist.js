@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// TODO: Utilize this service to separate API request out
 export function getArtistResults(artist, token) {
     axios({
         headers: { Authorization: `Bearer ${token}` },

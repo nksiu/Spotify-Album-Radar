@@ -17,8 +17,6 @@ router.put('/add', express.json(), async function(req,res) {
     let profileID = req.body.userId;
 
     const playlistID = req.body.playlist;
-
-    let ret = [];
       
     const playlistTracks = await axios({
         url: `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
@@ -121,6 +119,16 @@ router.put('/toggle', express.json(), async function(req,res) {
     }
   } else {
     res.json("No change was made");
+  }
+})
+
+router.post('/triggerCron', (req, res) => {
+  const ret = playlistHelper.cronJob();
+  if (ret.success) {
+    res.send("success");
+  } else {
+    res.status(500);
+    res.send(ret.error);
   }
 })
 
