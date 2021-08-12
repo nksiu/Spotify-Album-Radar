@@ -7,9 +7,6 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 
 #### Minimum Requirements (3-5)
 
-```
-
-
 - [x] User + Artist tracking
   - [x] User authentication for spotify should work to link user account
   - [x] User should be able to see a per-user home/profile page
@@ -24,24 +21,19 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 - [x] Users should be able to see a “new releases” page/section, where songs fitting the criterion from 3) appear. Songs must be from user’s tracked list of artists
   - [x] Pull entries from DB and display newly released songs
   - [x] Songs should be listed underneath the correct artist
-```
 
 #### Standard (2-4):
 
-```
 - [x] User should be able to specify playlist from which to pull tracked artists from (Automated artist parsing)
 - [x] User should be able to play a newly released-song from an artist on the website
 - [x] User should be able to remove an artist from their favourite artists
-```
 
 #### Stretch (2-3):
 
-```
 - [] Have the job update a user specified playlists with the filtered “most recent” songs.
 - [x] User should have playlist updates based off subscribed artists
 - [] Release retrieval job can be scheduled to run once a week
 - [] Have the job send an email summary of weekly updates
-```
 
 ## Description of Technology used:
 
@@ -77,18 +69,18 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 
 ## List of Contributions
 
-#### Berry Sinister
+#### Barry Sin
 
-- Suuper chad
+-
 
 #### Kelvin Lo
 
--Deployed app to heroku, restructured files and configured endpoints Added the about me endpoint/ setup schemas Setup login and logout feature Designed the Navbar with styled-components and used router to link the pages
+- In the frontend, I designed the Navbar with styled-components and used a router to link the different pages. In the backend, I implemented the user /me endpoint and setup the MongoDB schemas for storing data. Finally, I helped deploy the application, restructing files and code required to function in production.
 
 #### Nicholas Siu
 
-- ?XD?
+- I set up the initial project and its file structure. When we decided to move to Redux I set this up as well. For features, I developed OAuth handling on Express, login/logout on the platform, playlist dropdown, song parsing, and helped deploy the application to heroku
 
-#### Tristan Lui
+#### Tristan Lei
 
-- Took big dick in his mouth jokes every week
+-
