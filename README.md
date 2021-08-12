@@ -65,7 +65,8 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 
 ## Description of Next Steps
 
-- We were unable to complete one of our stretch goals which was to add email notifications to the user of weekly updates. This would greatly enhance the user experience which is what we greatly value.
+- We were unable to complete one of our stretch goals which was to add email notifications to the user of weekly updates. This would greatly enhance the user experience and increase visibility.
+- Due to limitations on Spotify's end, we were unable to open this application up for other accounts to use. The "Development" status given by Spotify only allows up to 25 users of our choosing to use our application. In the future we can try to submit a review to change our "Development" status to approved such that all Spotify accounts can use this application
 
 ## List of Contributions
 
