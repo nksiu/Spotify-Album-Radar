@@ -30,9 +30,9 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 
 #### Stretch (2-3):
 
-- [ ] Have the job update a user specified playlists with the filtered “most recent” songs.
+- [x] Have the job update a custom playlist with newly released songs.
 - [x] User should have playlist updates based off subscribed artists
-- [ ] Release retrieval job can be scheduled to run once a week
+- [x] Release retrieval job can be scheduled to run once a week
 - [ ] Have the job send an email summary of weekly updates
 
 ## Description of Technology used:
@@ -72,7 +72,7 @@ Spotify Album Radar is for anyone who loves listening to music and keeping up to
 
 #### Barry Sin
 
--
+- Created the Home page and the New Releases page. Implemented endpoints related to accessing playlist and album data from Spotify. Set up the weekly cronjob such that new releases get added to a generated playlist every Friday afternoon. 
 
 #### Kelvin Lo
 
