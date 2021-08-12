@@ -26,18 +26,18 @@ const Wrapper = styled.div`
 `
 
 const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlaylist }) => {
-    const { accessToken, userId, artists, modifyPlaylist } = user
+    const { accessToken, userId, artists, modifyPlaylist } = user;
     const [artistList, updateArtistList] = useState(artists);
-    const [toggle, updateToggle] = useState(modifyPlaylist)
+    const [toggle, updateToggle] = useState(modifyPlaylist);
 
-    useEffect(()=> {
+    useEffect(() => {
         updateArtistList(artists);
     }, [artists]);
 
     if (!accessToken) {
         return <Redirect to="/" ></Redirect>;
     }
-    
+
     const addArtist = (artist) => {
         const newObj = { userId, artistName: artist.label, id: artist.value };
         if (artistList.filter(savedArtist => {
@@ -50,7 +50,7 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
         }
     }
     const unSubscribeArtist = (i) => {
-        const newObj = {userId, ...artistList[i]};
+        const newObj = { userId, ...artistList[i] };
         deleteArtist(newObj);
         artistList.splice(i, 1);
         updateArtistList([...artistList]);
@@ -84,13 +84,13 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
                 <Toggle
                     id='modify-status'
                     defaultChecked={toggle}
-                    onChange={handleToggleChange} 
+                    onChange={handleToggleChange}
                 />
                 <p>Allow Modification of your playlist for subscribed artists</p> <br></br>
                 <p>This will create a new playlist in your Spotify Account where new releases will be added!</p>
                 <button> </button>
             </ToggleWrapper>
-            <PlaylistManager addArtistsFromPlaylist={addFromPlaylist} token={accessToken}/>
+            <PlaylistManager addArtistsFromPlaylist={addFromPlaylist} token={accessToken} />
             <ArtistManager addArtist={addArtist} />
             <ArtistList artists={artistList} deleteArtist={unSubscribeArtist}></ArtistList>
         </Wrapper>
@@ -99,6 +99,6 @@ const UserManagement = ({ user, addNewArtist, deleteArtist, addArtistsFromPlayli
 
 const mapStateToProps = state => ({
     user: state.user
-  })
+})
 
-export default connect(mapStateToProps, {addNewArtist, deleteArtist,addArtistsFromPlaylist})(UserManagement);
+export default connect(mapStateToProps, { addNewArtist, deleteArtist, addArtistsFromPlaylist })(UserManagement);

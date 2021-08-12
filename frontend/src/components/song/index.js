@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { colors } from '../../styles'
+import styled from 'styled-components';
+import { colors } from '../../styles';
 
 const SongWrapper = styled.div`
   width: 90%;
@@ -61,7 +61,7 @@ const Song = ({ songInfo }) => {
       <Container>
         <a href={songInfo.url}>
           <SongLink>
-          Open Album In Spotify
+            Open Album In Spotify
           </SongLink>
         </a>
       </Container>

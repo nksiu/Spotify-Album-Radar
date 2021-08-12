@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-const User = require('../../models/user')
+const User = require('../../models/user');
 
 router.get("/", function (req, res) {
   let promises = [];
@@ -35,15 +35,16 @@ router.get("/", function (req, res) {
       if (result.status != 'fulfilled') {
         console.log("Request to retrieve song failed");
       }
-      return result.status == "fulfilled"});
+      return result.status == "fulfilled"
+    });
 
     let currDate = new Date();
     let filterDate = new Date();
     let userID = req.query.userID;
-    User.findOne({userID: userID}).then((data) => {
+    User.findOne({ userID: userID }).then((data) => {
       let numDaysFilter = data.numDays;
       filterDate.setDate(currDate.getDate() - numDaysFilter);
-  
+
       let retArr = [];
       resultArr = resultArr.map((result) => {
         let filteredAlbums = result.value.data.items.filter((album) => {
@@ -70,8 +71,8 @@ router.get("/", function (req, res) {
 
 router.get("/days", function (req, res) {
   let userID = req.query.userID;
-  User.findOne({userID: userID}).then((data) => {
-    res.send({numDays: data.numDays});
+  User.findOne({ userID: userID }).then((data) => {
+    res.send({ numDays: data.numDays });
   })
 });
 
@@ -80,9 +81,9 @@ router.put("/days", function (req, res) {
   let newDays = req.query.days;
   if (!isNaN(newDays)) {
     User.findOneAndUpdate(
-      {userID: userID},
-      {numDays: newDays}
-      ).then(() => res.send(newDays));
+      { userID: userID },
+      { numDays: newDays }
+    ).then(() => res.send(newDays));
   } else {
     res.status(400);
     res.send("Bad Request, days must be number");

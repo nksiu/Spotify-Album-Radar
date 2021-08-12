@@ -10,14 +10,14 @@ const refreshToken = () => {
             method: 'post',
             url: 'https://accounts.spotify.com/api/token',
             headers: {
-              'Authorization': 'Basic ' + (new Buffer.from(
-                process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
-              ).toString('base64')),
-              'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + (new Buffer.from(
+                    process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
+                ).toString('base64')),
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
             data: `grant_type=refresh_token&refresh_token=${dbRes.refresh}`,
         }).then(ret => {
-            return Token.findOneAndUpdate({refresh: dbRes.refresh}, {access: ret.data.access_token}, {
+            return Token.findOneAndUpdate({ refresh: dbRes.refresh }, { access: ret.data.access_token }, {
                 returnOriginal: false
             }).then(() => {
                 return ret.data.access_token;
@@ -33,31 +33,31 @@ async function getSpotifyToken() {
         method: 'post',
         url: 'https://accounts.spotify.com/api/token',
         headers: {
-          'Authorization': 'Basic ' + (new Buffer.from(
-            process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
-          ).toString('base64')),
-          'content-type': 'application/x-www-form-urlencoded'
+            'Authorization': 'Basic ' + (new Buffer.from(
+                process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
+            ).toString('base64')),
+            'content-type': 'application/x-www-form-urlencoded'
         },
         data: 'grant_type=client_credentials',
-        })
+    })
     return res.data.access_token;
 }
 
-function queryLatestRelease (id, spotifyToken) {
+function queryLatestRelease(id, spotifyToken) {
     return axios.get(
         `https://api.spotify.com/v1/artists/${id}/albums`,
         {
-          params: {
-            limit: 25,
-            include_groups: "album,single",
-          },
-          headers: {
-            Authorization: "Bearer " + spotifyToken,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
+            params: {
+                limit: 25,
+                include_groups: "album,single",
+            },
+            headers: {
+                Authorization: "Bearer " + spotifyToken,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
         }
-    ).then((albums)=> {
+    ).then((albums) => {
         let currDate = new Date();
         let filterDate = new Date();
         filterDate.setDate(currDate.getDate() - 7);
@@ -84,25 +84,25 @@ function queryLatestRelease (id, spotifyToken) {
 
 function updateTrackedArtists(artistList) {
     TrackedArtists.find({}, 'artistId').then((subscribed) => {
-        const artistIds = subscribed.map((entry)=> {
+        const artistIds = subscribed.map((entry) => {
             // Simply map mongo entries to id strings
             return entry.artistId;
         })
         artistList.forEach((artist) => {
             if (!artistIds.includes(artist.id)) {
-                getSpotifyToken().then((token)=> {
+                getSpotifyToken().then((token) => {
                     queryLatestRelease(artist.id, token)
-                    .then((artistReleases)=> {
-                        let newTrackedArtist = new TrackedArtists({
-                            artistId: artist.id,
-                            releases: artistReleases,
-                        });
-                        newTrackedArtist.save();
-                    })
+                        .then((artistReleases) => {
+                            let newTrackedArtist = new TrackedArtists({
+                                artistId: artist.id,
+                                releases: artistReleases,
+                            });
+                            newTrackedArtist.save();
+                        })
                 })
             }
         })
-    }).catch(()=> {
+    }).catch(() => {
         console.log('failed to fetch from db');
     });
 }
@@ -110,9 +110,9 @@ function updateTrackedArtists(artistList) {
 const pullLatestReleases = (spotifyToken) => {
     TrackedArtists.find({}, 'artistId').then((artists) => {
         artists.forEach((artist) => {
-            queryLatestRelease(artist.artistId, spotifyToken).then((artistReleases)=> {
+            queryLatestRelease(artist.artistId, spotifyToken).then((artistReleases) => {
                 // update Entry under tracked Artist
-                TrackedArtists.findOneAndUpdate({artistId: artist.artistId}, { releases: artistReleases}, {
+                TrackedArtists.findOneAndUpdate({ artistId: artist.artistId }, { releases: artistReleases }, {
                     returnOriginal: false
                 }).then();
             });
@@ -130,14 +130,14 @@ const getAlbumTracks = (albumId, spotifyToken) => {
     return axios.get(
         `https://api.spotify.com/v1/albums/${albumId}/tracks`,
         {
-          params: {
-            limit: 50,
-          },
-          headers: {
-            Authorization: "Bearer " + spotifyToken,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
+            params: {
+                limit: 50,
+            },
+            headers: {
+                Authorization: "Bearer " + spotifyToken,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
         }
     ).then((res) => {
         return res.data.items.map((track) => {
@@ -170,36 +170,36 @@ const cronJob = () => {
     return refreshToken().then((newToken) => {
         return getSpotifyToken().then(token => {
             pullLatestReleases(token).then((res) => {
-            const newReleases = res.filter((trackedArtist) => {
-                return trackedArtist.releases.length != 0;
-            });
-            User.find({}, 'artists modifyPlaylist playlistID').then((result) => {
-                const usersToUpdate = result.filter(user => user.modifyPlaylist);
-                usersToUpdate.forEach((user) => {
-                    user.artists.forEach((artist) => {
-                        // Finds if artist exists
-                        const found = newReleases.find((release)=> {
-                            return release.artistId == artist.id;
-                        });
-                        // Add newRelease to corresponding user's playlist
-                        if (found) {
-                            found.releases.forEach((song) => {
-                                getAlbumTracks(song.albumId, token).then(tracks => {
-                                    // Add tracks to playlist.
-                                    addTracksToPlaylist(newToken, tracks, user.playlistID).then();
+                const newReleases = res.filter((trackedArtist) => {
+                    return trackedArtist.releases.length != 0;
+                });
+                User.find({}, 'artists modifyPlaylist playlistID').then((result) => {
+                    const usersToUpdate = result.filter(user => user.modifyPlaylist);
+                    usersToUpdate.forEach((user) => {
+                        user.artists.forEach((artist) => {
+                            // Finds if artist exists
+                            const found = newReleases.find((release) => {
+                                return release.artistId == artist.id;
+                            });
+                            // Add newRelease to corresponding user's playlist
+                            if (found) {
+                                found.releases.forEach((song) => {
+                                    getAlbumTracks(song.albumId, token).then(tracks => {
+                                        // Add tracks to playlist.
+                                        addTracksToPlaylist(newToken, tracks, user.playlistID).then();
+                                    })
                                 })
-                            })
-                        }
-                    });
+                            }
+                        });
+                    })
                 })
-            })
             });
-            return {success: true};
-        }).catch((e)=> {
-            return {success: false, error: e};
+            return { success: true };
+        }).catch((e) => {
+            return { success: false, error: e };
         });
     })
-    
-    
+
+
 }
-module.exports = {updateTrackedArtists, pullLatestReleases, cronJob};
+module.exports = { updateTrackedArtists, pullLatestReleases, cronJob };

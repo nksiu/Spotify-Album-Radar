@@ -15,11 +15,11 @@ app.use(express.static("public"));
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
   "mongodb+srv://" +
-    process.env.DB_USER +
-    ":" +
-    process.env.DB_PASS +
-    "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }
+  process.env.DB_USER +
+  ":" +
+  process.env.DB_PASS +
+  "@cluster0.5g0ai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
 );
 
 const db = mongoose.connection;

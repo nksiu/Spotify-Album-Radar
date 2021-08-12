@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
-import Cookies from 'js-cookie'
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 // Components
 import NavBar from "./components/navbar/NavBar";
@@ -10,19 +10,19 @@ import About from "./page/About";
 import UserManagement from "./page/user-management";
 
 // Actions
-import { login } from './actions/userActions'
+import { login } from './actions/userActions';
 
 
 function App({ login }) {
   useEffect(() => {
-    const token = Cookies.get('access_token')
-    const session = window.localStorage.getItem('access_token')
+    const token = Cookies.get('access_token');
+    const session = window.localStorage.getItem('access_token');
     if (token) {
-      window.localStorage.setItem('access_token', token)
-      login(token)
+      window.localStorage.setItem('access_token', token);
+      login(token);
     }
     if (session) {
-      login(session)
+      login(session);
     }
   }, [login])
 
@@ -49,4 +49,4 @@ function App({ login }) {
   );
 }
 
-export default connect(null, {login})(App);
+export default connect(null, { login })(App);

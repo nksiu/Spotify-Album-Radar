@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { fontStyles } from '../../styles'
+import styled from 'styled-components';
+import { fontStyles } from '../../styles';
 
 const ToggleWrapper = styled.div`
   display: flex;
@@ -154,4 +154,4 @@ const ToggleWrapper = styled.div`
   }
 `
 
-export default ToggleWrapper
+export default ToggleWrapper;

@@ -30,11 +30,11 @@ const DeleteButton = styled.div`
     float: right;
 `
 
-function Artist(props){
+function Artist(props) {
     const handleDelete = () => {
         props.deleteArtist(props.index)
     }
-    return(
+    return (
         <ArtistRow>
             <ArtistWrapper>
                 <ArtistName>

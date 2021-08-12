@@ -5,8 +5,8 @@ import {
   GET_ARTISTS,
   ADD_ARTIST_FROM_PLAYLIST,
   DELETE_ARTIST
-} from './types'
-import axios from 'axios'
+} from './types';
+import axios from 'axios';
 
 export const login = (token) => (dispatch, getState) => {
   axios.get('/api/me',
@@ -19,7 +19,7 @@ export const login = (token) => (dispatch, getState) => {
       }
     }
   ).then((res) => {
-    console.log(res.data)
+    console.log(res.data);
     dispatch({
       type: LOGIN,
       payload: {
@@ -85,7 +85,7 @@ export const addArtistsFromPlaylist = (token, playlist) => (dispatch, getState) 
     userId: playlist.userId,
     token: token
   }
-  axios({        
+  axios({
     method: 'put',
     url: '/api/playlist/add',
     data: payload,

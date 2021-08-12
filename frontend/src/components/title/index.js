@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { colors, fontStyles } from '../../styles'
+import styled from 'styled-components';
+import { colors, fontStyles } from '../../styles';
 
 export const Title = styled.h1`
   font-family: ${fontStyles.title};
