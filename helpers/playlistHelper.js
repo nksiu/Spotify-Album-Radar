@@ -1,4 +1,5 @@
 const TrackedArtists = require('../models/trackedArtists');
+const User = require('../models/user');
 const axios = require('axios');
 
 async function getSpotifyToken() {
@@ -32,7 +33,7 @@ function queryLatestRelease (id, spotifyToken) {
     ).then((albums)=> {
         let currDate = new Date();
         let filterDate = new Date();
-        filterDate.setDate(currDate.getDate() - 30);
+        filterDate.setDate(currDate.getDate() - 10);
         let filteredAlbums = albums.data.items.filter((album) => {
             let albumReleaseDate = new Date(album.release_date);
             return albumReleaseDate > filterDate && albumReleaseDate < currDate;
@@ -44,6 +45,7 @@ function queryLatestRelease (id, spotifyToken) {
                 name: album.name,
                 release_date: album.release_date,
                 url: album.external_urls.spotify,
+                albumId: album.id,
             };
         });
         return cleanAlbums;
@@ -78,27 +80,106 @@ function updateTrackedArtists(artistList) {
     });
 }
 
-const pullLatestReleases = () => {
-    getSpotifyToken().then((spotifyToken)=> {
-        TrackedArtists.find({}, 'artistId').then((artists) => {
-            artists.forEach((artist) => {
-                queryLatestRelease(artist.artistId, spotifyToken).then((artistReleases)=> {
-                    // update Entry under tracked Artist
-                    TrackedArtists.findOneAndUpdate({artistId: artist.artistId}, {releases: artistReleases}, {
-                        returnOriginal: false
-                    });
-                });
-            })
-        }).catch(() => {
-            console.log('failed to fetch from db');
+const pullLatestReleases = (spotifyToken) => {
+    TrackedArtists.find({}, 'artistId').then((artists) => {
+        artists.forEach((artist) => {
+            queryLatestRelease(artist.artistId, spotifyToken).then((artistReleases)=> {
+                // update Entry under tracked Artist
+                TrackedArtists.findOneAndUpdate({artistId: artist.artistId}, { releases: artistReleases}, {
+                    returnOriginal: false
+                }).then();
+            });
         })
-    }).catch(()=> {
-        console.log("Failed to retrieve spotify token");
-    });
+    }).catch(() => {
+        console.log('failed to fetch from db');
+    })
 
     return TrackedArtists.find({}).then((artists) => {
         return artists;
     });
 }
 
-module.exports = {updateTrackedArtists, pullLatestReleases};
+const getAlbumTracks = (albumId, spotifyToken) => {
+    return axios.get(
+        `https://api.spotify.com/v1/albums/${albumId}/tracks`,
+        {
+          params: {
+            limit: 50,
+          },
+          headers: {
+            Authorization: "Bearer " + spotifyToken,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+    ).then((res) => {
+        return res.data.items.map((track) => {
+            return track.uri;
+        })
+    })
+}
+
+const addTracksToPlaylist = (spotifyToken, tracks, playlistID) => {
+    return axios.post(
+        `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
+        {
+          headers: {
+            Authorization: "Bearer " + spotifyToken,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          data: {
+              uris: tracks,
+          }
+        }
+    ).then((snapshot) => {
+        return snapshot.snapshot_id;
+    }).catch((e) => {
+        console.log(e);
+    })
+}
+
+
+const cronJob = () => {
+    getSpotifyToken().then(token => {
+        pullLatestReleases(token).then((res) => {
+            const newReleases = res.filter((trackedArtist) => {
+                return trackedArtist.releases.length != 0;
+            });
+            // console.log(newReleases);
+            User.find({}, 'artists modifyPlaylist playlistID').then((result) => {
+                // Only update userplaylists that have option set.
+                const usersToUpdate = result.filter(user => user.modifyPlaylist);
+                usersToUpdate.forEach((user) => {
+                    // for every user, 
+                        // go through every artist they follow
+                    user.artists.forEach((artist) => {
+                        // Finds if artist exists
+                        const found = newReleases.find((release)=> {
+                            return release.artistId == artist.id;
+                        });
+                        // If artist has new release
+                            // Add newRelease to corresponding user's playlist
+                        if (found) {
+                            console.log(found);
+                            found.releases.forEach((song) => {
+                                getAlbumTracks(song.albumId, token).then(tracks => {
+                                    console.log(tracks);
+                                    // Add tracks to playlist.
+                                    addTracksToPlaylist(token, tracks, user.playlistID).then((s) => {
+                                        console.log(s);
+                                    });
+                                })
+                            })
+                        }
+                    });
+                })
+            })
+        });
+    }).catch(()=> {
+        console.log("Failed to retrieve spotify token");
+    });
+
+    
+}
+module.exports = {updateTrackedArtists, pullLatestReleases, cronJob};
