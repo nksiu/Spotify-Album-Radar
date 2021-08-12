@@ -1,7 +1,5 @@
 const express = require("express");
 const request = require("request");
-const axios = require("axios");
-const querystring = require("querystring");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();

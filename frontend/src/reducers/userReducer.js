@@ -10,7 +10,9 @@ import {
 const initialState = {
   userId: '',
   accessToken: '',
-  artists: []
+  artists: [],
+  modifyPlaylist: false,
+  playlistId: ''
 }
 
 const userReducer = function(state = initialState, action) {
