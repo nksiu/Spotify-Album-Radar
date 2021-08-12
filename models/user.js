@@ -5,6 +5,8 @@ let user = new mongoose.Schema({
   userID: String,
   artists: [],
   numDays: Number,
+  modifyPlaylist: Boolean,
+  playlistID: String,
 });
 
 let userData = mongoose.model("userData", user);

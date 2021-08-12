@@ -71,4 +71,51 @@ router.put('/add', express.json(), async function(req,res) {
     });
 })
 
+router.put('/toggle', express.json(), async function(req,res) {
+
+  let toggleState = req.body.toggleState;
+
+  let userState = await User.findOne({userID: req.body.userID}, 'modifyPlaylist');
+
+  let userPlaylistID = await User.findOne({userID: req.body.userID}, 'playlistID');
+
+  if (toggleState !== userState) {
+    if (userState == true && !userPlaylistID){
+      const createdPlaylistInfo = await axios({
+        method: 'post',
+        url: `https://api.spotify.com/v1/users/${req.body.userID}/playlists`,
+        headers: {
+            'Authorization': "Bearer " + req.body.token
+        },
+        data: {
+            "name": "Weekly releases from Spotify Release Tracker",
+            "description": "Your weekly releases, tracked and created from Spotify Release Tracker"
+        }
+        }).then(response => {
+          let addedPlaylistID = response.id;
+          User.findOneAndUpdate({userID: req.body.userID}, {
+            modifyPlaylist: true,
+            playlistID: addedPlaylistID
+          }).then(rtn => {
+            res.json(addedPlaylistID);
+          })
+      })
+    } else if (userState == false){
+        User.findOneAndUpdate({userID: req.body.userID}, {
+          modifyPlaylist: false,
+        }).then(rtn => {
+          res.json(addedPlaylistID);
+        })
+    } else {
+        User.findOneAndUpdate({userID: req.body.userID}, {
+          modifyPlaylist: true,
+        }).then(rtn => {
+          res.json(addedPlaylistID);
+        })
+    }
+  } else {
+    res.json("No change was made");
+  }
+})
+
 module.exports = router;
