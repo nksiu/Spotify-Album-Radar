@@ -53,19 +53,20 @@ const NewReleases = ({ token, user }) => {
 
   const [formData, updateFormData] = useState("");
   const updateReleases = () => {
-    axios.get('/api/albums',
+    axios.post('/api/albums',
       {
-        params: { userID: user.userId, artists: JSON.stringify(user.artists) },
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        artists: JSON.stringify(user.artists),
+        userID: user.userId
       }).then((res) => {
         updateNewReleases(res.data);
       });
   }
-  useEffect(updateReleases, [token, daysThreshold, user.artists, user.userId]);
+  useEffect(updateReleases, [token, user.artists, user.userId]);
   useEffect(getDays, [user.userId]);
 
   const handleSubmit = (e) => {
@@ -73,7 +74,9 @@ const NewReleases = ({ token, user }) => {
 
     let newDays = parseInt(formData);
     if (isNaN(newDays)) {
-      alert('Please enter a number!')
+      alert('Please enter a number!');
+    } else if(daysThreshold === newDays){
+      return;
     } else {
       axios({
         method: 'put',
@@ -85,6 +88,7 @@ const NewReleases = ({ token, user }) => {
         }
       }).then((res) => {
         updateDaysThreshold(res.data);
+        updateReleases();
       })
     }
   }

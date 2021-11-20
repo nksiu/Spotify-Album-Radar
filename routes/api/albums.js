@@ -3,14 +3,15 @@ const router = express.Router();
 const axios = require("axios");
 const User = require('../../models/user')
 
-router.get("/", function (req, res) {
+router.post("/", function (req, res) {
   let promises = [];
   let myData;
-  if (req.query.artists == undefined) {
+  if (req.body.artists == undefined) {
     res.send([]);
     return;
   } else {
-    myData = JSON.parse(req.query.artists);
+    // myData = JSON.parse(req.query.artists);
+    myData = JSON.parse(req.body.artists);
   }
   myData.forEach((artist) => {
     let promise = axios.get(
@@ -18,16 +19,17 @@ router.get("/", function (req, res) {
       {
         params: {
           limit: 25,
+          include_groups: "album,single,appears_on",
         },
         headers: {
-          Authorization: req.headers.authorization,
+          Authorization: req.body.headers.Authorization,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
       }
     );
     promises.push(promise);
-  });
+});
 
   Promise.allSettled(promises).then((resultArr) => {
     // Only handle fulfilled requests
@@ -39,8 +41,8 @@ router.get("/", function (req, res) {
 
     let currDate = new Date();
     let filterDate = new Date();
-    let userID = req.query.userID;
-    User.findOne({userID: userID}).then((data) => {
+    let userID = req.body.userID;
+    User.findOne({ userID: userID }).then((data) => {
       let numDaysFilter = data.numDays;
       filterDate.setDate(currDate.getDate() - numDaysFilter);
   
